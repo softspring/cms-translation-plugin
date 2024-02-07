@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Softspring\CmsTranslationPlugin\Admin\Menu\ContentMenuProvider:
+        tags: [ 'sfs_cms.admin_menu.content_menu_provider' ]
+
+    Softspring\CmsTranslationPlugin\Admin\Routing\AdminRoutingProvider:
+        tags: [ 'sfs_cms.admin_routing_provider' ]
+

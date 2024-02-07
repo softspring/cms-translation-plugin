@@ -1,0 +1,21 @@
+admin_page:
+    tabs_menu:
+        translations: "Traducciones"
+
+    read:
+        translations:
+            edit.link: "Editar"
+
+    versions:
+        actions:
+            translations.link: "Traducciones"
+
+    translations:
+        meta.title: "Traducciones de la página"
+        title: "Traducciones de la página (v%versionNumber%)"
+        breadcrumb: "Traducciones de la página"
+        actions:
+            cancel.button: "Cancelar"
+            save.button: "Guardar nueva versión"
+            import_translations.link: "Importar traducciones"
+            export_translations.link: "Exportar traducciones"

@@ -1,0 +1,31 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Softspring\CmsTranslationPlugin\EventListener\Admin\ContentVersion\:
+        resource: '../../src/EventListener/Admin/ContentVersion/*'
+
+    Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\:
+        resource: '../../../src/Form/Admin/ContentVersion/*'
+
+    sfs_cms.translation_plugin.admin.content_version.controller:
+        class: Softspring\Component\CrudlController\Controller\CrudlController
+        public: true
+        arguments:
+            $manager: '@Softspring\CmsBundle\Manager\ContentVersionManagerInterface'
+            $configs:
+                entity_attribute: 'version'
+                version_translations:
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_INITIALIZE
+                    create_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_ENTITY
+                    form_prepare_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_PREPARE
+                    form_init_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_INIT
+                    form_valid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_VALID
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FAILURE
+                    form_invalid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_INVALID
+                    view_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_VIEW
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXCEPTION
