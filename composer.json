@@ -1,0 +1,25 @@
+{
+    "name": "softspring/cms-translation-plugin",
+    "description": "A translation extension for softspring cms",
+    "type": "sfs-cms-plugin",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "softspring/cms-bundle": "^5.2@dev"
+    },
+    "require-dev": {
+        "symfony/translation": "^6.4",
+        "friendsofphp/php-cs-fixer": "3.48.*",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Softspring\\CmsTranslationPlugin\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
