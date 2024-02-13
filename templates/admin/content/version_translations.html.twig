@@ -1,1 +1,2 @@
-{% extends '@SfsCmsTranslationPlugin/admin/content/version_translations.'~(sfs_components_theme|default('bootstrap5'))~'.html.twig' %}
+{% set sfs_components_theme = sfs_cms_sylius_bundle is defined ? 'semantic-ui' : 'bootstrap5' %}
+{% extends '@SfsCmsTranslationPlugin/admin/content/version_translations.'~sfs_components_theme~'.html.twig' %}
