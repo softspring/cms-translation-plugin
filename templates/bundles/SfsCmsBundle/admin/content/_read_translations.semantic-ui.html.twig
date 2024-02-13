@@ -1,0 +1,42 @@
+{% trans_default_domain 'sfs_cms_contents' %}
+
+{% embed '@SfsCms/admin/_embeds/_card.html.twig' with {'title': ('admin_'~content_type~'.read.translations.title')|trans} %}
+    {% trans_default_domain 'sfs_cms_contents' %}
+
+    {% block title %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block content %}
+        <div class="ui list">
+            <div class="item">
+                Default language
+                <div class="header">{{ entity.defaultLocale }}</div>
+            </div>
+            <div class="item">
+                Languages
+                <div class="header">{{ entity.locales|join(', ') }}r</div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
+            <a class="fluid ui primary labeled icon button" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity}) }}">
+                <i class="icon pencil"></i>{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}</a>
+        {% else %}
+            <a class="fluid ui primary labeled icon button disabled">
+                <i class="icon pencil"></i>{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}</a>
+        {% endif %}
+{#        {% set stats = sfs_trans_stats(content, entity.site.languages) %}#}
+{#        {% for locale,localeStats in stats %}#}
+{#            <p class="d-flex">#}
+{#                <strong>{{ locale }}</strong>#}
+{#                <span class="col-10">#}
+{#                                                {% if localeStats.total %}#}
+{#                                                    {{ (localeStats.translated/localeStats.total*100)|round }}%#}
+{#                                                    <span class="text-tertiary">({{ localeStats.translated }}/{{ localeStats.total }})</span>#}
+{#                                                {% endif %}#}
+{#                                            </span>#}
+{#            </p>#}
+{#        {% endfor %}#}
+    {% endblock %}
+{% endembed %}
