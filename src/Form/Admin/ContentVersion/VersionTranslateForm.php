@@ -49,12 +49,17 @@ class VersionTranslateForm extends AbstractType
                 continue;
             }
 
+            $additionalFieldOptions = [];
+
             if (str_starts_with($field, '_seo')) {
                 $module = 'SEO';
                 $moduleType = 'seo';
                 $fieldName = substr($field, strrpos($field, ':') + 1);
                 // $moduleConfig = $this->cmsConfig->getModule($moduleType);
                 // $fieldOptions = $moduleConfig['module_options']['form_fields'][$fieldName]['type_options'] ?? [];
+                $additionalFieldOptions = [
+                    'label_format' => 'admin_page.form.seo.%name%.label',
+                ];
             } else {
                 $module = substr($field, 0, strrpos($field, ':'));
                 $moduleType = $flattenTranslations["$module:_module"];
@@ -74,7 +79,7 @@ class VersionTranslateForm extends AbstractType
                 'children_attr' => [
                     'style' => in_array($fieldOptions['type'] ?? '', ['textarea', 'html', 'wysiwyg']) ? 'height:300px' : '',
                 ],
-            ]);
+            ] + $additionalFieldOptions);
         }
     }
 }

@@ -70,8 +70,10 @@
                             {% set module = field.vars.attr['data-module'] %}
                             <tr>
                                 <td colspan="50" class="pt-5 pb-2">
-                                    {{ field.vars.attr['data-module']|split(':')|join(' > ') }} >
-                                    <strong>{{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}</strong>
+                                    {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
+                                    {% if module_type != 'seo' %}
+                                        &gt; <strong>{{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}</strong>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endif %}
@@ -79,7 +81,11 @@
                         <tr>
                             {#<td>{{ field.vars.name }}</td>#}
                             <td>
-                                {{ (module_type~'.form.'~field.vars.attr['data-module-field']~'.label')|trans({}, 'sfs_cms_modules') }}
+                                {% if module_type == 'seo' %}
+                                    {{ ('admin_page.form.seo.'~field.vars.attr['data-module-field']~'.label')|trans({}, 'sfs_cms_contents') }}
+                                {% else %}
+                                    {{ (module_type~'.form.'~field.vars.attr['data-module-field']~'.label')|trans({}, 'sfs_cms_modules') }}
+                                {% endif %}
                                 {{ form_widget(field._trans_id) }}
                                 {{ form_widget(field._default) }}
                             </td>
