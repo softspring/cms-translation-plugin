@@ -8,7 +8,11 @@ class TranslationsTransformer
     {
         $flatten = [];
 
-        foreach ($translations as $container => $modules) {
+        foreach ($translations['_seo']??[] as $field => $value) {
+            $flatten["_seo:$field"] = $value;
+        }
+
+        foreach ($translations as $container => $modules) if ($container !== '_seo') {
             foreach ($modules as $i => $module) {
                 $flatten = array_merge($flatten, self::flattenModule("$container:$i", $module));
             }
@@ -38,6 +42,17 @@ class TranslationsTransformer
         return $flatten;
     }
 
+    public static function applySEO(array $seo, array $flattenTranslations): ?array
+    {
+        foreach ($flattenTranslations as $translationKey => $values) {
+            if (str_starts_with($translationKey, '_seo')) {
+                $seo[substr($translationKey, 5)] = $values;
+            }
+        }
+
+        return $seo;
+    }
+
     /**
      * @throws InvalidTranslationMappingException
      */
@@ -49,6 +64,9 @@ class TranslationsTransformer
 
         foreach ($flattenTranslations as $translationKey => $values) {
             if (str_ends_with($translationKey, ':_module')) {
+                continue;
+            }
+            if (str_starts_with($translationKey, '_seo')) {
                 continue;
             }
             $translationKeyParts = explode(':', $translationKey);

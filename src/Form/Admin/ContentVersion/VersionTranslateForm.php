@@ -49,11 +49,19 @@ class VersionTranslateForm extends AbstractType
                 continue;
             }
 
-            $module = substr($field, 0, strrpos($field, ':'));
-            $moduleType = $flattenTranslations["$module:_module"];
-            $fieldName = substr($field, strrpos($field, ':') + 1);
-            $moduleConfig = $this->cmsConfig->getModule($moduleType);
-            $fieldOptions = $moduleConfig['module_options']['form_fields'][$fieldName]['type_options'] ?? [];
+            if (str_starts_with($field, '_seo')) {
+                $module = 'SEO';
+                $moduleType = 'seo';
+                $fieldName = substr($field, strrpos($field, ':') + 1);
+                // $moduleConfig = $this->cmsConfig->getModule($moduleType);
+                // $fieldOptions = $moduleConfig['module_options']['form_fields'][$fieldName]['type_options'] ?? [];
+            } else {
+                $module = substr($field, 0, strrpos($field, ':'));
+                $moduleType = $flattenTranslations["$module:_module"];
+                $fieldName = substr($field, strrpos($field, ':') + 1);
+                $moduleConfig = $this->cmsConfig->getModule($moduleType);
+                $fieldOptions = $moduleConfig['module_options']['form_fields'][$fieldName]['type_options'] ?? [];
+            }
 
             $builder->add($field, TranslatableType::class, [
                 'translation_domain' => false,

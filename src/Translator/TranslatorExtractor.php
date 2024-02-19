@@ -4,12 +4,14 @@ namespace Softspring\CmsTranslationPlugin\Translator;
 
 use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
+use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
 
 class TranslatorExtractor
 {
     public function __construct(
-        protected CmsConfig $cmsConfig
+        protected CmsConfig $cmsConfig,
+        protected ContentManagerInterface $contentManager
     ) {
     }
 
@@ -19,6 +21,12 @@ class TranslatorExtractor
     public function extract(ContentVersionInterface $contentVersion): array
     {
         $translations = [];
+
+        $contentConfig = $this->cmsConfig->getContent($this->contentManager->getType($contentVersion->getContent()))['version_seo'];
+        $seo = $contentVersion->getSeo();
+        foreach ($contentConfig as $field => $fieldConfig) {
+            $translations['_seo'][$field] = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
+        }
 
         $data = $contentVersion->getData();
         foreach ($data ?? [] as $container => $modules) {
