@@ -8,13 +8,15 @@ class TranslationsTransformer
     {
         $flatten = [];
 
-        foreach ($translations['_seo']??[] as $field => $value) {
+        foreach ($translations['_seo'] ?? [] as $field => $value) {
             $flatten["_seo:$field"] = $value;
         }
 
-        foreach ($translations as $container => $modules) if ($container !== '_seo') {
-            foreach ($modules as $i => $module) {
-                $flatten = array_merge($flatten, self::flattenModule("$container:$i", $module));
+        foreach ($translations as $container => $modules) {
+            if ('_seo' !== $container) {
+                foreach ($modules as $i => $module) {
+                    $flatten = array_merge($flatten, self::flattenModule("$container:$i", $module));
+                }
             }
         }
 
