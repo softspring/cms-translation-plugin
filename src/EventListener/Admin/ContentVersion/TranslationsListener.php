@@ -49,8 +49,7 @@ class TranslationsListener extends AbstractContentVersionListener
             ],
             SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_ENTITY => [
                 ['onEventDispatchContentTypeEvent', 10],
-                ['onTranslationsEntity', 1],
-                ['onTranslationsEntityOverrideLayout', 0],
+                ['onTranslationsLoadEntity', 1],
             ],
             SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_PREPARE => [
                 ['onEventDispatchContentTypeEvent', 10],
@@ -89,7 +88,7 @@ class TranslationsListener extends AbstractContentVersionListener
         ];
     }
 
-    public function onTranslationsEntity(CreateEntityEvent $event): void
+    public function onTranslationsLoadEntity(CreateEntityEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -108,17 +107,6 @@ class TranslationsListener extends AbstractContentVersionListener
         $request->attributes->set('version', $version);
 
         $event->setEntity($version);
-    }
-
-    public function onTranslationsEntityOverrideLayout(CreateEntityEvent $event): void
-    {
-        $request = $event->getRequest();
-        $version = $event->getEntity();
-
-        // override layout from request
-        if ($request->request->has('version_translations_form')) {
-            $version->setLayout($request->request->all()['version_translations_form']['layout']);
-        }
     }
 
     /**
@@ -156,6 +144,7 @@ class TranslationsListener extends AbstractContentVersionListener
         $flattenTranslations = $event->getForm()->getData();
 
         $version->setData(TranslationsTransformer::applyFlatten($version->getData(), $flattenTranslations));
+        $version->setSeo(TranslationsTransformer::applySEO($version->getSEO() ?? [], $flattenTranslations));
 
         $event->setApplied(false); // do save entity
     }
