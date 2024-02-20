@@ -93,11 +93,10 @@
 
         {{ form_rest(form) }}
 
-        <div class="d-flex justify-content-end align-items-center">
-            <a href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}"
-               class="btn btn-outline-secondary">{{ ('admin_'~content_type~'.translations.actions.cancel.button')|trans }}</a>
-            <input type="submit" value="{{ ('admin_'~content_type~'.translations.actions.save.button')|trans }}"
-                   class="btn btn-primary ms-3"/>
+        <div class="ui hidden divider"></div>
+        <div class="ui buttons">
+            <button class="ui labeled icon primary button" type="submit"><i class="save icon"></i> {{ ('admin_'~content_type~'.translations.actions.save.button')|trans }}</button>
+            <a href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}" class="ui button">{{ ('admin_'~content_type~'.translations.actions.cancel.button')|trans }}</a>
         </div>
         {{ form_end(form) }}
     </div>
