@@ -71,6 +71,9 @@ class TranslatorExtractor
                 }
             } else {
                 foreach ($moduleConfig['module_options']['form_fields'] ?? [] as $field => $fieldConfig) {
+                    if ($fieldConfig === null) {
+                        continue;
+                    }
                     $translations[$field] = $this->extractFieldTranslations($fieldConfig, $moduleData[$field]);
                 }
             }
