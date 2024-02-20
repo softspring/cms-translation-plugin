@@ -3,6 +3,7 @@
 namespace Softspring\CmsTranslationPlugin\Translator;
 
 use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
@@ -17,6 +18,7 @@ class TranslatorExtractor
 
     /**
      * @throws ExtractException
+     * @throws InvalidContentException
      */
     public function extract(ContentVersionInterface $contentVersion): array
     {
