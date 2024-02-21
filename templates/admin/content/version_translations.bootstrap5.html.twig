@@ -15,6 +15,7 @@
     <li class="breadcrumb-item"><a
                 href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}">{{ ('admin_'~content_type~'.list.breadcrumb')|trans }}</a>
     </li>
+    <li class="breadcrumb-item"><a href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': entity.name}) }}</a></li>
     <li class="breadcrumb-item active"
         aria-current="content">{{ ('admin_'~content_type~'.translations.breadcrumb')|trans({'%name%':content_entity.name}) }}</li>
 {% endblock breadcrums_content %}
@@ -102,7 +103,7 @@
                 {{ form_rest(form) }}
 
                 <div class="d-flex justify-content-end align-items-center">
-                    <a href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}"
+                    <a href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity}) }}"
                        class="btn btn-outline-secondary">{{ ('admin_'~content_type~'.translations.actions.cancel.button')|trans }}</a>
                     <input type="submit" value="{{ ('admin_'~content_type~'.translations.actions.save.button')|trans }}"
                            class="btn btn-primary ms-3"/>
