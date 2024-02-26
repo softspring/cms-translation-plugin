@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $apiDriver: '%sfs_cms_translation.api.driver%'
+
+    Softspring\CmsTranslationPlugin\Controller\TranslatorController: ~
+
+    Softspring\CmsTranslationPlugin\Twig\TranslatorExtension:
+        tags: [ 'twig.extension' ]

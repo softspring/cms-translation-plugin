@@ -12,7 +12,8 @@
     "require-dev": {
         "symfony/translation": "^6.4",
         "friendsofphp/php-cs-fixer": "3.48.*",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "google/cloud-translate": "^1.17"
     },
     "autoload": {
         "psr-4": {
@@ -21,5 +22,8 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "suggest": {
+        "google/cloud-translate": "To use Google Cloud Translation API"
     }
 }
