@@ -1,0 +1,6 @@
+<script type="text/javascript">
+    {% if route_defined('sfs_cms_admin_content_'~content_type~'_api_translate') %}
+    const translateUrl = '{{ url('sfs_cms_admin_content_'~content_type~'_api_translate', {'content':content_entity.id}) }}';
+    const sfsCmsTranslationApiDriver = '{{ sfs_cms_translation.api.driver|default('none') }}';
+    {% endif %}
+</script>

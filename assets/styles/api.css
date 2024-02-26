@@ -1,0 +1,48 @@
+
+@keyframes translating-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #a1baff }
+}
+
+@-webkit-keyframes translating-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #a1baff }
+}
+
+@keyframes translated-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #9cff9c }
+}
+
+@-webkit-keyframes translated-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #9cff9c }
+}
+
+@keyframes translation-error-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #ffa1a1 }
+}
+
+@-webkit-keyframes translation-error-animation {
+    0% { background-color: inherit; }
+    100% { background-color: #ffa1a1 }
+}
+
+.sfs-cms-is-translating {
+    animation: translating-animation .5s linear;
+    -webkit-animation: translating-animation .5s linear;
+    background-color: #a1baff;
+}
+
+.sfs-cms-translated {
+    animation: translated-animation .5s linear;
+    -webkit-animation: translated-animation .5s linear;
+}
+
+.sfs-cms-translation-error {
+    animation: translation-error-animation .5s linear;
+    -webkit-animation: translation-error-animation .5s linear;
+    background-color: #ffa1a1;
+}
+

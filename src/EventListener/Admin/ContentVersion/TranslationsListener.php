@@ -119,6 +119,7 @@ class TranslationsListener extends AbstractContentVersionListener
 
         $contentConfig = $event->getRequest()->attributes->get('_content_config');
 
+        $this->translatableContext->setDefaultLocale($version->getContent()->getDefaultLocale());
         $this->translatableContext->setLocales($version->getContent()->getLocales());
         $flattenTranslations = TranslationsTransformer::flatten($this->translatorExtractor->extract($version));
 
