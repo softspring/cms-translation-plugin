@@ -10,7 +10,7 @@
 
 {% block title %}{{ ('admin_'~content_type~'.translations.meta.title')|trans({'%name%':content_entity.name}) }}{% endblock %}
 
-{% block header_title %}{{ ('admin_'~content_type~'.translations.title')|trans({'%name%':content_entity.name, '%versionNumber%': content_entity.versionNumber|default('0')}) }}{% endblock %}
+{% block header_title %}{{ ('admin_'~content_type~'.translations.title')|trans({'%name%':content_entity.name, '%versionNumber%': prev_version.versionNumber|default('')}) }}{% endblock %}
 {% block header_subtitle %}Manage your page{% endblock %}
 
 {% block breadcrums_content %}
