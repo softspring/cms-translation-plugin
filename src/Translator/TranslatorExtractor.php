@@ -76,7 +76,7 @@ class TranslatorExtractor
                     if (null === $fieldConfig) {
                         continue;
                     }
-                    $translations[$field] = $this->extractFieldTranslations($fieldConfig, $moduleData[$field]);
+                    $translations[$field] = $this->extractFieldTranslations($fieldConfig, $moduleData[$field] ?? null);
                 }
             }
 
