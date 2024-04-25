@@ -2,6 +2,7 @@
 
 namespace Softspring\CmsTranslationPlugin\Admin\Menu;
 
+use RuntimeException;
 use Softspring\CmsBundle\Admin\Menu\AbstractContentMenuProvider;
 use Softspring\CmsBundle\Admin\Menu\MenuHelper;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
@@ -15,7 +16,7 @@ class ContentMenuProvider extends AbstractContentMenuProvider
 
     /**
      * @throws InvalidContentException
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getMenu(array $menu, ?string $currentSelection = null, array $context = []): array
     {

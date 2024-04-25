@@ -2,6 +2,8 @@
 
 namespace Softspring\CmsTranslationPlugin\Translator;
 
-class InvalidTranslationMappingException extends \Exception
+use Exception;
+
+class InvalidTranslationMappingException extends Exception
 {
 }

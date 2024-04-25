@@ -2,6 +2,8 @@
 
 namespace Softspring\CmsTranslationPlugin\Translator;
 
-class ExtractException extends \Exception
+use Exception;
+
+class ExtractException extends Exception
 {
 }

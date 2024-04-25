@@ -2,6 +2,8 @@
 
 namespace Softspring\CmsTranslationPlugin\Translator;
 
+use Exception;
+use ReflectionClass;
 use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
@@ -62,7 +64,7 @@ class TranslatorExtractor
 
             $moduleConfig = $this->cmsConfig->getModule($moduleData['_module']);
 
-            $moduleTypeReflection = new \ReflectionClass($moduleConfig['module_type']);
+            $moduleTypeReflection = new ReflectionClass($moduleConfig['module_type']);
             $isContainer = ContainerModuleType::class === $moduleConfig['module_type'] || $moduleTypeReflection->isSubclassOf(ContainerModuleType::class);
 
             $translations['_module'] = $moduleData['_module'];
@@ -81,7 +83,7 @@ class TranslatorExtractor
             }
 
             return array_filter($translations);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ExtractException('Error extracting translations', 0, $e);
         }
     }
