@@ -14,6 +14,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('api')
+                    ->canBeEnabled()
+                    ->children()
+                        ->enumNode('driver')->values(['google'])->defaultValue('google')->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

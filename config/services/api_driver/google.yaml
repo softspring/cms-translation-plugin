@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Google\Cloud\Translate\V2\TranslateClient: ~
+
+    Softspring\CmsTranslationPlugin\Api\Driver\GoogleTranslatorDriver:
+        arguments:
+            $client: '@Google\Cloud\Translate\V2\TranslateClient'
+
+    Softspring\CmsTranslationPlugin\Api\Driver\TranslatorDriverInterface:
+        alias: Softspring\CmsTranslationPlugin\Api\Driver\GoogleTranslatorDriver
+

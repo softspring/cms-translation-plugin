@@ -3,5 +3,13 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $apiEnabled: '%sfs_cms_translation.api.enabled%'
+
+    Softspring\CmsTranslationPlugin\Admin\Menu\ContentMenuProvider:
+        tags: [ 'sfs_cms.admin_menu.content_menu_provider' ]
+
+    Softspring\CmsTranslationPlugin\Admin\Routing\AdminRoutingProvider:
+        tags: [ 'sfs_cms.admin_routing_provider' ]
 
     Softspring\CmsTranslationPlugin\Translator\TranslatorExtractor: ~

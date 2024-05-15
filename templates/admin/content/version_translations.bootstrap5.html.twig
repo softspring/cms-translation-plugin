@@ -21,6 +21,7 @@
 {% endblock breadcrums_content %}
 
 {% block content %}
+    {% include '@SfsCmsTranslationPlugin/_translate_api_url.html.twig' %}
     {% include ['@content/'~content_type~'/admin/_content_title.html.twig', '@SfsCms/admin/content/_content_title.html.twig']  with {'current':'translations', 'content_type':content_type, 'content_entity':entity, 'version_entity': prev_version|default(false)} %}
     {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'entity':version_entity} %}
 

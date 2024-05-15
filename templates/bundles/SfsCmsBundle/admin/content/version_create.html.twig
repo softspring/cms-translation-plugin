@@ -1,0 +1,6 @@
+{% extends '@!SfsCms/admin/content/version_create.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include '@SfsCmsTranslationPlugin/_translate_api_url.html.twig' %}
+{% endblock %}
