@@ -12,7 +12,7 @@ class GoogleTranslatorDriver implements TranslatorDriverInterface
     {
     }
 
-    public function translate(string $originText, string $targetLanguage, string $sourceLanguage = null, array $options = []): ApiTranslation
+    public function translate(string $originText, string $targetLanguage, ?string $sourceLanguage = null, array $options = []): ApiTranslation
     {
         $googleOptions = [
             'format' => $options['format'] ?? 'text',

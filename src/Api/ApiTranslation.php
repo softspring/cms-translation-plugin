@@ -12,7 +12,7 @@ class ApiTranslation
     protected bool $isTranslated = false;
     protected ?string $translationError = null;
 
-    public static function create(string $originText, string $sourceLanguage = null, array $options = []): ApiTranslation
+    public static function create(string $originText, ?string $sourceLanguage = null, array $options = []): ApiTranslation
     {
         $translation = new self();
         $translation->setSourceLanguage($sourceLanguage);
@@ -23,7 +23,7 @@ class ApiTranslation
         return $translation;
     }
 
-    public function translate(string $targetLanguage, string $translatedText = null, string $translationError = null): self
+    public function translate(string $targetLanguage, ?string $translatedText = null, ?string $translationError = null): self
     {
         $this->setTargetLanguage($targetLanguage);
         $this->setTranslatedText($translatedText);
