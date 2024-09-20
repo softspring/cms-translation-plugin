@@ -29,17 +29,36 @@
         <div class="row">
             <div class="col">
                 <div class="float-end">
-                    {#                    {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, entity) %} #}
-                    {#                        <a class="btn btn-outline-secondary" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import_translations', {'content':entity, 'back':'translations'}) }}">{{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}</a> #}
-                    {#                    {% else %} #}
-                    <a class="btn btn-outline-secondary disabled">{{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}</a>
-                    {#                    {% endif %} #}
+                    {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, entity) %}
+                        <a class="btn btn-outline-secondary" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':entity, 'back':'translations'}) }}">
+                            <i class="bi bi-upload"></i>
+                            {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-secondary disabled">
+                            <i class="bi bi-upload"></i>
+                            {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
+                        </a>
+                    {% endif %}
 
-                    {#                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %} #}
-                    {#                        <a class="btn btn-outline-secondary" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_translations', {'content':entity, 'back':'translations'}) }}">{{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}</a> #}
-                    {#                    {% else %} #}
-                    <a class="btn btn-outline-secondary disabled">{{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}</a>
-                    {#                    {% endif %} #}
+                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" title="Export" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-download"></i>
+                                {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% for format in content_config.admin.version_translations_export.formats %}
+                                    <li><a class="dropdown-item" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="btn btn-outline-secondary disabled">
+                            <i class="bi bi-download"></i>
+                            {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -58,6 +77,23 @@
                                 <div class="bg-{{ colors[i]|default('dark') }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
                                     <i class="bi bi-translate"></i>
                                     {{ locale }}
+
+                                    {% if i > 0 %}
+                                    <div class="float-start">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="btn-group float-end">
+                                        <button type="button" class="btn btn-link dropdown-toggle" title="Export" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            {% for format in content_config.admin.version_translations_export.formats %}
+                                                <li><a class="dropdown-item" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </th>
                         {% endfor %}

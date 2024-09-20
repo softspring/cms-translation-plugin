@@ -3,6 +3,7 @@
 namespace Softspring\CmsTranslationPlugin\EventListener\Admin\ContentVersion;
 
 use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\EventListener\Admin\ContentVersion\AbstractContentVersionListener;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Manager\ContentVersionManagerInterface;
@@ -111,6 +112,7 @@ class TranslationsListener extends AbstractContentVersionListener
 
     /**
      * @throws ExtractException
+     * @throws InvalidContentException
      */
     public function onFormPrepareResolve(FormPrepareEvent $event): void
     {

@@ -19,3 +19,7 @@ admin_page:
             save.button: "Save new version"
             import_translations.link: "Import translations"
             export_translations.link: "Export translations"
+
+        export:
+            formats:
+                xliff12: "XLIFF 1.2"

@@ -21,6 +21,15 @@ class SfsCmsTranslationPlugin extends SfsCmsPlugin
     public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_VIEW = 'sfs_cms_translation_plugin.admin.content_versions.translations_view';
     public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXCEPTION = 'sfs_cms_translation_plugin.admin.content_versions.translations_exception';
 
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_INITIALIZE = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_initialize';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_ENTITY = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_create_entity';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_NOT_FOUND = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_not_found';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_FOUND = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_found';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_APPLY = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_apply';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_SUCCESS = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_success';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_FAILURE = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_failure';
+    public const ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_EXCEPTION = 'sfs_cms_translation_plugin.admin.content_versions.translations_export_exception';
+
     public function getPath(): string
     {
         return \dirname(__DIR__);
@@ -30,7 +39,7 @@ class SfsCmsTranslationPlugin extends SfsCmsPlugin
     {
         parent::build($container);
 
-        // allow override bundles templates
+        // allow overriding bundles templates
         $container->addCompilerPass(new AddTwigBundlesNamespacesPass($this->getPath().'/templates'));
     }
 
