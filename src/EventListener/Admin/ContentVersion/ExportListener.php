@@ -119,6 +119,7 @@ class ExportListener extends AbstractContentVersionListener
         $flattenTranslations = TranslationsTransformer::flatten($dataTranslations);
 
         $exportOptions = [
+            'exportFileNameBase' => "{$entity->getContent()->getName()} (v{$entity->getVersionNumber()})",
             'ref' => [
                 'id' => $entity->getContent()->getId(),
                 'class' => get_class($entity->getContent()),
@@ -127,7 +128,7 @@ class ExportListener extends AbstractContentVersionListener
         ];
 
         if ('all' === $targetLocale) {
-            $filePath = sys_get_temp_dir()."/{$entity->getContent()->getId()}_v{$entity->getVersionNumber()}.zip";
+            $filePath = sys_get_temp_dir()."/{$exportOptions['exportFileNameBase']}.zip";
             file_exists($filePath) && unlink($filePath);
             $file = new File($filePath, false);
             $zipFile = new ZipArchive();

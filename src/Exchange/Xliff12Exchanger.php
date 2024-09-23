@@ -21,7 +21,13 @@ class Xliff12Exchanger implements ExchangerInterface
 
     public function exportFile(array $flattenTranslations, string $domain, string $targetLocale, string $fallbackLocale, array $options = []): File
     {
-        $file = new File(sys_get_temp_dir()."/$domain.$targetLocale.xlf", false);
+        $fileName = "$domain.$targetLocale.xlf";
+
+        if ($options['exportFileNameBase'] ?? false) {
+            $fileName = "{$options['exportFileNameBase']}.$targetLocale.xlf";
+        }
+
+        $file = new File(sys_get_temp_dir()."/$fileName", false);
         file_put_contents($file->getPathname(), $this->exportXml($flattenTranslations, $domain, $targetLocale, $fallbackLocale, $options));
 
         return $file;
