@@ -2,7 +2,8 @@
 
 namespace Softspring\CmsTranslationPlugin\Exchange;
 
-class ExportException extends \Exception
-{
+use Exception;
 
+class ExportException extends Exception
+{
 }

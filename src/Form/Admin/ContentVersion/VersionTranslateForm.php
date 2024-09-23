@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VersionTranslateForm extends AbstractType
 {
     public function __construct(
-        protected CmsConfig $cmsConfig
+        protected CmsConfig $cmsConfig,
     ) {
     }
 

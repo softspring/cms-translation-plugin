@@ -14,7 +14,7 @@ class TranslatorExtractor
 {
     public function __construct(
         protected CmsConfig $cmsConfig,
-        protected ContentManagerInterface $contentManager
+        protected ContentManagerInterface $contentManager,
     ) {
     }
 

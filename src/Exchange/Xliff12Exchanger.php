@@ -5,6 +5,7 @@ namespace Softspring\CmsTranslationPlugin\Exchange;
 use Composer\InstalledVersions;
 use DOMDocument;
 use DOMText;
+use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 
 class Xliff12Exchanger implements ExchangerInterface
@@ -119,7 +120,7 @@ class Xliff12Exchanger implements ExchangerInterface
             }
 
             return $dom->saveXML();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ExportException($e->getMessage(), $e->getCode(), $e);
         }
     }

@@ -32,16 +32,16 @@ class ExportListener extends AbstractContentVersionListener
     protected const ACTION_NAME = 'version_translations_export';
 
     public function __construct(
-        ContentManagerInterface        $contentManager,
+        ContentManagerInterface $contentManager,
         ContentVersionManagerInterface $contentVersionManager,
-        RouteManagerInterface          $routeManager,
-        CmsConfig                      $cmsConfig,
-        RouterInterface                $router,
-        FlashNotifier                  $flashNotifier,
-        AuthorizationCheckerInterface  $authorizationChecker,
-        protected TranslatorExtractor  $translatorExtractor,
-        protected TranslatableContext  $translatableContext,
-        protected Exchanger            $exchanger,
+        RouteManagerInterface $routeManager,
+        CmsConfig $cmsConfig,
+        RouterInterface $router,
+        FlashNotifier $flashNotifier,
+        AuthorizationCheckerInterface $authorizationChecker,
+        protected TranslatorExtractor $translatorExtractor,
+        protected TranslatableContext $translatableContext,
+        protected Exchanger $exchanger,
     ) {
         parent::__construct($contentManager, $contentVersionManager, $routeManager, $cmsConfig, $router, $flashNotifier, $authorizationChecker);
     }
