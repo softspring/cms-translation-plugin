@@ -107,7 +107,7 @@ class VersionTranslateForm extends AbstractType
                 $importedValue = TranslationsCleaner::cleanText($field->vars['value']);
 
                 if ($originalValue !== $importedValue) {
-                    $field->vars['attr']['class'] = ($field->vars['attr']['class'] ?? '').' sfs-cms-translation-imported border-primary';
+                    $field->vars['attr']['class'] = ($field->vars['attr']['class'] ?? '').' sfs-cms-translation-imported';
                 }
             }
         }
