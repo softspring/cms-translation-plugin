@@ -5,7 +5,10 @@ namespace Softspring\CmsTranslationPlugin\Exchange;
 use Composer\InstalledVersions;
 use DOMDocument;
 use DOMText;
+use ErrorException;
 use Exception;
+use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
+use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\HttpFoundation\File\File;
 
 class Xliff12Exchanger implements ExchangerInterface
@@ -15,9 +18,153 @@ class Xliff12Exchanger implements ExchangerInterface
         return 'xliff12';
     }
 
-    public function importFile()
+    public static function supportsImport(File $file): bool
     {
-        // TODO: Implement import() method.
+        if ('text/xml' !== $file->getMimeType()) {
+            return false;
+        }
+
+        try {
+            self::readXmlFile($file);
+        } catch (ImportException) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws ImportException
+     */
+    protected static function readXmlFile(File $file): DOMDocument
+    {
+        $xml = XmlUtils::loadFile($file->getPathname());
+
+        self::assertXliffXml($xml);
+
+        return $xml;
+    }
+
+    /**
+     * @throws ImportException
+     */
+    protected static function assertXliffXml(DOMDocument $xliff): void
+    {
+        if (1 !== $xliff->childElementCount) {
+            throw new ImportException('Invalid XLIFF file');
+        }
+
+        $xliffNode = $xliff->firstElementChild;
+        if ('xliff' !== $xliffNode->nodeName) {
+            throw new ImportException('Invalid XLIFF file');
+        }
+        $xliffVersion = $xliffNode->getAttribute('version');
+        $xliffNamespace = $xliffNode->getAttribute('xmlns');
+
+        if ('1.2' !== $xliffVersion || 'urn:oasis:names:tc:xliff:document:1.2' !== $xliffNamespace) {
+            throw new ImportException('Invalid XLIFF version or namespace');
+        }
+    }
+
+    public function importFile(File $file, array $flattenTranslations): ImportResultCollection
+    {
+        // <?xml version="1.0" encoding="UTF-8"? >
+        // <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+        //  <file original="1eda8479-2d77-68ca-b75d-a92d8d1d8eb0_v58" xml:space="preserve" source-language="es" target-language="en" datatype="plaintext">
+        //    <header>
+        //      <tool tool-id="sfs-cms-translation-plugin" tool-name="SfsCms Translation Plugin" tool-version="5.3.9999999.9999999-dev"/>
+        //      <reference class="Softspring\CmsBundle\Entity\Page" id="1eda8479-2d77-68ca-b75d-a92d8d1d8eb0" version="58"/>
+        //    </header>
+        //    <body>
+        //      <trans-unit id="66f1019ae8592" resname="_seo:metaTitle">
+        //        <source>Page title</source>
+        //        <target>Page title changed</target>
+        //        <note from="meaning">Page title</note>
+        //      </trans-unit>
+
+        $xliffNode = $this->readXmlFile($file);
+
+        $results = new ImportResultCollection();
+
+        $fileNodes = $xliffNode->getElementsByTagName('file');
+
+        if (1 !== $fileNodes->length) {
+            throw new ImportException('Invalid XLIFF file, only one file node is allowed');
+        }
+
+        foreach ($fileNodes as $fileNode) {
+            // TODO CHECK CMS PLUGIN VERSION
+            // <header><tool tool-id="sfs-cms-translation-plugin" tool-name="SfsCms Translation Plugin" tool-version="5.3.9999999.9999999-dev"/>
+
+            // get file header->reference data
+            // <header><reference class="Softspring\CmsBundle\Entity\Page" id="1eda8479-2d77-68ca-b75d-a92d8d1d8eb0" version="58"/>
+            $headerNode = $fileNode->getElementsByTagName('header')->item(0);
+            $entityClass = $headerNode->getElementsByTagName('reference')->item(0)->getAttribute('class');
+            $entityId = $headerNode->getElementsByTagName('reference')->item(0)->getAttribute('id');
+            $versionNumber = $headerNode->getElementsByTagName('reference')->item(0)->getAttribute('version');
+
+            $results->addResult($result = new ImportResult($flattenTranslations, $entityClass, $entityId, $versionNumber));
+            $currentFlattenTranslations = $flattenTranslations;
+            $result->setSourceLanguage($fileNode->getAttribute('source-language'));
+            $result->setTargetLanguage($targetLanguage = $fileNode->getAttribute('target-language'));
+            $result->setDomain($fileNode->getAttribute('original'));
+
+            foreach ($fileNode->getElementsByTagName('body') as $bodyNode) {
+                foreach ($bodyNode->getElementsByTagName('trans-unit') as $transUnitNode) {
+                    $transId = $transUnitNode->getAttribute('id');
+                    $resName = $transUnitNode->getAttribute('resname');
+                    $module = $transUnitNode->getAttribute('data-module');
+                    try {
+                        $source = TranslationsCleaner::cleanText($transUnitNode->getElementsByTagName('source')->item(0)->textContent);
+                    } catch (ErrorException $errorException) {
+                        $source = '';
+                    }
+                    try {
+                        $target = TranslationsCleaner::cleanText($transUnitNode->getElementsByTagName('target')->item(0)->textContent);
+                    } catch (ErrorException $errorException) {
+                        $target = '';
+                    }
+
+                    // TODO get notes
+
+                    // apply translation
+                    $applied = false;
+                    foreach ($currentFlattenTranslations as $key => $translation) {
+                        if (!is_array($translation)) {
+                            continue;
+                        }
+
+                        if (($translation['_trans_id'] ?? false) === $transId) {
+                            // check module
+                            $keyParts = explode(':', $key);
+                            array_pop($keyParts);
+                            $moduleKey = implode(':', $keyParts).':_module';
+                            if ($module && ($currentFlattenTranslations[$moduleKey] ?? false) !== $module) {
+                                $result->addWarning("Module not applicable for $transId, maybe module has been changed");
+                                break;
+                            }
+
+                            $currentFlattenTranslations[$key][$targetLanguage] = $target;
+                            $applied = true;
+                            break;
+                        }
+                    }
+
+                    if (!$applied) {
+                        if (isset($currentFlattenTranslations[$transId])) {
+                            $currentFlattenTranslations[$transId][$targetLanguage] = $target;
+                            break;
+                        } else {
+                            $result->addWarning("Translation not applicable for $transId, maybe module has been deleted");
+                        }
+                    }
+                }
+            }
+
+            $result->setFlattenTranslations($currentFlattenTranslations);
+        }
+
+        return $results;
     }
 
     public function exportFile(array $flattenTranslations, string $domain, string $targetLocale, string $fallbackLocale, array $options = []): File

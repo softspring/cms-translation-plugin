@@ -3,6 +3,7 @@
 namespace Softspring\CmsTranslationPlugin\Exchange;
 
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Exchanger
 {
@@ -31,5 +32,16 @@ class Exchanger
         }
 
         return $this->exchangers[$name];
+    }
+
+    public function getImporter(File $file): ExchangerInterface
+    {
+        foreach ($this->exchangers as $exchanger) {
+            if ($exchanger::supportsImport($file)) {
+                return $exchanger;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('No exchanger found for file "%s".', $file->getFilename()));
     }
 }

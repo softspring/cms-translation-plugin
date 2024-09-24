@@ -82,6 +82,20 @@
     <div class="container-fluid bg-white">
         <div class="row">
             <div class="col pb-3">
+
+                {% if app.request.attributes.has('_translations_imported') %}
+                    <div class="alert alert-success" role="alert">
+                        Translations imported successfully, review them and save a new version to apply changes.
+                    </div>
+                {% endif %}
+
+                {% for warning in importWarnings|default %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ warning }}
+                    </div>
+                {% endfor %}
+
+
                 {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %}
                 {{ form_start(form) }}
                 <table class="table">

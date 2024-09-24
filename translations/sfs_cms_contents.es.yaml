@@ -23,3 +23,12 @@ admin_page:
         export:
             formats:
                 xliff12: "XLIFF 1.2"
+
+    translations_import:
+        meta.title: "Importar traducciones"
+        title: "Importar traducciones"
+        breadcrumb: "Importar traducciones"
+        file.label: "Archivo"
+        actions:
+            cancel.button: "Cancelar"
+            import.button: "Cargar traducciones"

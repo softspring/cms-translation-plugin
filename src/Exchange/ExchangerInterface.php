@@ -8,7 +8,12 @@ interface ExchangerInterface
 {
     public static function format(): string;
 
-    //    public function import();
+    public static function supportsImport(File $file): bool;
+
+    /**
+     * @throws ImportException
+     */
+    public function importFile(File $file, array $flattenTranslations): ImportResultCollection;
 
     /**
      * @throws ExportException
