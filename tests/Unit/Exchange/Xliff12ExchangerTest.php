@@ -127,10 +127,6 @@ class Xliff12ExchangerTest extends TestCase
     public static function importTestData(): array
     {
         $test1 = [
-            'expectedDomain' => 'entityHashId_v58',
-            'expectedVersionNumber' => '58',
-            'expectedEntityId' => 'entityHashId',
-            'expectedEntityClass' => 'Softspring\CmsBundle\Entity\Page',
             'xml' => <<<TEST1
 <?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
@@ -179,6 +175,10 @@ TEST1,
                     '_trans_id' => 'id2',
                 ],
             ],
+            'expectedDomain' => 'entityHashId_v58',
+            'expectedVersionNumber' => '58',
+            'expectedEntityId' => 'entityHashId',
+            'expectedEntityClass' => 'Softspring\CmsBundle\Entity\Page',
             'warnings' => [
                 'Translation not applicable for id3, maybe module has been deleted',
             ],
