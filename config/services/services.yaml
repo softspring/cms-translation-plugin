@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $apiEnabled: '%sfs_cms_translation.api.enabled%'
+            $apiDriver: '%sfs_cms_translation.api.driver%'
 
     Softspring\CmsTranslationPlugin\Admin\Menu\ContentMenuProvider:
         tags: [ 'sfs_cms.admin_menu.content_menu_provider' ]
@@ -19,3 +20,6 @@ services:
 
     Softspring\CmsTranslationPlugin\Exchange\Exchanger:
         arguments: [!tagged_iterator { tag: 'sfs_cms.translation_plugin.exchanger', default_index_method: 'format' }]
+
+    Softspring\CmsTranslationPlugin\Form\Extension\TranslatableExtension:
+        tags: [ 'form.type_extension' ]

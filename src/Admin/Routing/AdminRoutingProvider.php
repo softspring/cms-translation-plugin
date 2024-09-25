@@ -8,10 +8,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 class AdminRoutingProvider implements AdminRoutingProviderInterface
 {
-    public function __construct(protected bool $apiEnabled)
-    {
-    }
-
     public function getAdminRoutes(string $type): RouteCollection
     {
         $collection = new RouteCollection();
@@ -21,12 +17,6 @@ class AdminRoutingProvider implements AdminRoutingProviderInterface
                 '_controller' => 'sfs_cms.translation_plugin.admin.content_version.controller::create',
                 'configKey' => 'version_translations',
             ]));
-
-            if ($this->apiEnabled) {
-                $collection->add('api_translate', new Route('/{content}/api/translate', [
-                    '_controller' => 'Softspring\CmsTranslationPlugin\Controller\TranslatorController::translate',
-                ]));
-            }
 
             $collection->add('translations_export', new Route('/{content}/translations/export/{target}.{format}', [
                 '_controller' => 'sfs_cms.translation_plugin.admin.content_version.controller::apply',

@@ -20,7 +20,7 @@ class ApiTranslateForm extends AbstractType
             'csrf_protection' => false,
             'block_prefix' => '',
             'block_name' => '',
-            'method' => 'GET',
+            'method' => 'POST',
         ]);
     }
 

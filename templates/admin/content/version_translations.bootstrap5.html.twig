@@ -5,7 +5,9 @@
 {% form_theme form
     'bootstrap_5_layout.html.twig'
     '@SfsCms/forms/routes_theme.html.twig'
-    '@SfsCms/forms/types_theme.html.twig' %}
+    '@SfsCms/forms/types_theme.html.twig'
+    '@SfsCmsTranslationPlugin/admin/content/translation_form_theme.html.twig'
+%}
 
 {% block title %}{{ ('admin_'~content_type~'.translations.meta.title')|trans({'%name%':content_entity.name}) }}{% endblock %}
 
@@ -22,7 +24,6 @@
 {% endblock breadcrums_content %}
 
 {% block content %}
-    {% include '@SfsCmsTranslationPlugin/_translate_api_url.html.twig' %}
     {% include ['@content/'~content_type~'/admin/_content_title.html.twig', '@SfsCms/admin/content/_content_title.html.twig']  with {'current':'translations', 'content_type':content_type, 'content_entity':entity, 'version_entity': prev_version|default(false)} %}
     {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'entity':version_entity} %}
 
@@ -109,8 +110,12 @@
 
                                     {% if i > 0 %}
                                         <div class="float-start">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
-                                                 width="16" height="18">
+                                            <button class="p-2 text-primary bg-white border border-1" type="button"
+                                                    data-translate-all-target-locale="{{ locale }}">
+                                                {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
+                                                {% endif %}
+                                            </button>
                                         </div>
                                     {% endif %}
 
