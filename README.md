@@ -1,10 +1,8 @@
+# CMS Translation Plugin
 
-*This plugin is under development, more features will be added soon, and existing ones may change.*
-
-[![Latest Stable Version](https://poser.pugx.org/softspring/cms-translation-plugin/v/stable.svg)](https://packagist.org/packages/softspring/cms-translation-plugin)
-[![Latest Unstable Version](https://poser.pugx.org/softspring/cms-translation-plugin/v/unstable.svg)](https://packagist.org/packages/softspring/cms-translation-plugin)
-[![License](https://poser.pugx.org/softspring/cms-translation-plugin/license.svg)](https://packagist.org/packages/softspring/cms-translation-plugin)
-[![PHP Version Require](http://poser.pugx.org/softspring/cms-translation-plugin/require/php)](https://packagist.org/packages/softspring/cms-translation-plugin)
-[![Total Downloads](https://poser.pugx.org/softspring/cms-translation-plugin/downloads)](https://packagist.org/packages/softspring/cms-translation-plugin)
-[![Build status](https://github.com/softspring/cms-translation-plugin/actions/workflows/php.yml/badge.svg?branch=5.3)](https://github.com/softspring/cms-translation-plugin/actions/workflows/php.yml)
-
+![Latest Stable](https://img.shields.io/packagist/v/softspring/cms-translation-plugin?label=stable&style=flat-square)
+![Latest Unstable](https://img.shields.io/packagist/v/softspring/cms-translation-plugin?label=unstable&style=flat-square&include_prereleases)
+![License](https://img.shields.io/packagist/l/softspring/cms-translation-plugin?style=flat-square)
+![PHP Version](https://img.shields.io/packagist/dependency-v/softspring/cms-translation-plugin/php?style=flat-square)
+![Downloads](https://img.shields.io/packagist/dt/softspring/cms-translation-plugin?style=flat-square)
+[![CI](https://img.shields.io/github/actions/workflow/status/softspring/cms-translation-plugin/php.yml?branch=5.3&style=flat-square&label=CI)](https://github.com/softspring/cms-translation-plugin/actions/workflows/php.yml)
