@@ -19,3 +19,16 @@ admin_page:
             save.button: "Guardar nueva versión"
             import_translations.link: "Importar traducciones"
             export_translations.link: "Exportar traducciones"
+
+        export:
+            formats:
+                xliff12: "XLIFF 1.2"
+
+    translations_import:
+        meta.title: "Importar traducciones"
+        title: "Importar traducciones"
+        breadcrumb: "Importar traducciones"
+        file.label: "Archivo"
+        actions:
+            cancel.button: "Cancelar"
+            import.button: "Cargar traducciones"

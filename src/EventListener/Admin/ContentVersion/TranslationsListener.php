@@ -3,6 +3,7 @@
 namespace Softspring\CmsTranslationPlugin\EventListener\Admin\ContentVersion;
 
 use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\EventListener\Admin\ContentVersion\AbstractContentVersionListener;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Manager\ContentVersionManagerInterface;
@@ -111,6 +112,7 @@ class TranslationsListener extends AbstractContentVersionListener
 
     /**
      * @throws ExtractException
+     * @throws InvalidContentException
      */
     public function onFormPrepareResolve(FormPrepareEvent $event): void
     {
@@ -123,6 +125,21 @@ class TranslationsListener extends AbstractContentVersionListener
         $this->translatableContext->setLocales($version->getContent()->getLocales());
         $flattenTranslations = TranslationsTransformer::flatten($this->translatorExtractor->extract($version));
 
+        $session = $event->getRequest()->getSession();
+        if ($session->has('_translations_imported')) {
+            $importedFlattenTranslations = $session->get('_translations_imported');
+            $importedFlattenChangelog = $session->get('_translations_changelog');
+
+            // TODO merge with current translations
+            $flattenTranslationsBeforeImporting = $flattenTranslations;
+            $flattenTranslations = $importedFlattenTranslations;
+
+            $event->getRequest()->attributes->set('_translations_imported', true);
+
+            $session->remove('_translations_imported');
+            $session->remove('_translations_changelog');
+        }
+
         $event->setType($this->getOption($event->getRequest(), 'type'));
         $event->setFormOptions([
             'content' => $event->getRequest()->attributes->get('content'),
@@ -130,6 +147,7 @@ class TranslationsListener extends AbstractContentVersionListener
             'content_type' => $contentConfig['_id'],
             'content_config' => $contentConfig,
             'flatten_translations' => $flattenTranslations,
+            'flatten_translations_before_importing' => $flattenTranslationsBeforeImporting ?? null,
         ]);
 
         // set data for form
@@ -221,6 +239,11 @@ class TranslationsListener extends AbstractContentVersionListener
 
         // add prev version
         $event->getData()['prev_version'] = $request->attributes->get('prevVersion');
+
+        if ($request->getSession()->has('_translations_warnings')) {
+            $event->getData()['importWarnings'] = $request->getSession()->get('_translations_warnings');
+            $request->getSession()->remove('_translations_warnings');
+        }
     }
 
     /**

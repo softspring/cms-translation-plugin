@@ -5,6 +5,7 @@ namespace Softspring\CmsTranslationPlugin\Config\Model;
 use Softspring\CmsBundle\Config\Model\ConfigExtensionInterface;
 use Softspring\CmsBundle\Config\Model\Content;
 use Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\VersionTranslateForm;
+use Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\VersionTranslationsImportForm;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
@@ -17,7 +18,8 @@ class ContentExtension implements ConfigExtensionInterface
                 continue;
             }
 
-            $versionTranslations = (new ArrayNodeDefinition('version_translations'))
+            $node->append(
+                (new ArrayNodeDefinition('version_translations'))
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('is_granted')->defaultValue('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS')->end()
@@ -25,9 +27,34 @@ class ContentExtension implements ConfigExtensionInterface
                     ->scalarNode('type')->defaultValue(VersionTranslateForm::class)->end()
                     ->scalarNode('success_redirect_to')->defaultValue('')->end()
                 ->end()
-            ;
+            );
 
-            $node->append($versionTranslations);
+            $node->append(
+                (new ArrayNodeDefinition('version_translations_export'))
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('is_granted')->defaultValue('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT')->end()
+                    ->arrayNode('formats')
+                        ->defaultValue(['xliff12'])
+                        ->enumPrototype()->values(['xliff12'])->end()
+                    ->end()
+                ->end()
+            );
+
+            $node->append(
+                (new ArrayNodeDefinition('version_translations_import'))
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('is_granted')->defaultValue('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_IMPORT')->end()
+                    ->arrayNode('formats')
+                        ->defaultValue(['xliff12'])
+                        ->enumPrototype()->values(['xliff12'])->end()
+                    ->end()
+                    ->scalarNode('view')->defaultValue('@SfsCmsTranslationPlugin/admin/content/version_translations_import.html.twig')->end()
+                    ->scalarNode('type')->defaultValue(VersionTranslationsImportForm::class)->end()
+                    ->scalarNode('success_redirect_to')->defaultValue('')->end()
+                ->end()
+            );
         }
     }
 

@@ -7,14 +7,17 @@ use Softspring\CmsBundle\Config\Exception\DisabledModuleException;
 use Softspring\CmsBundle\Config\Exception\InvalidModuleException;
 use Softspring\CmsBundle\Form\Type\TranslatableType;
 use Softspring\CmsBundle\Model\ContentInterface;
+use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VersionTranslateForm extends AbstractType
 {
     public function __construct(
-        protected CmsConfig $cmsConfig
+        protected CmsConfig $cmsConfig,
     ) {
     }
 
@@ -24,6 +27,7 @@ class VersionTranslateForm extends AbstractType
             'content_type' => null,
             'content_config' => null,
             'flatten_translations' => null,
+            'flatten_translations_before_importing' => null,
         ]);
 
         $resolver->setRequired('content_type');
@@ -34,6 +38,8 @@ class VersionTranslateForm extends AbstractType
 
         $resolver->setRequired('flatten_translations');
         $resolver->setAllowedTypes('flatten_translations', ['array']);
+
+        $resolver->setAllowedTypes('flatten_translations_before_importing', ['array', 'null']);
     }
 
     /**
@@ -80,6 +86,30 @@ class VersionTranslateForm extends AbstractType
                     'style' => in_array($fieldOptions['type'] ?? '', ['textarea', 'html', 'wysiwyg']) ? 'height:300px' : '',
                 ],
             ] + $additionalFieldOptions);
+        }
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        $flattenTranslationsBeforeImport = $options['flatten_translations_before_importing'];
+
+        if (empty($flattenTranslationsBeforeImport)) {
+            return;
+        }
+
+        foreach ($view->children as $transKey => $translationEntry) {
+            foreach ($translationEntry as $language => $field) {
+                if (str_starts_with($language, '_')) {
+                    continue;
+                }
+
+                $originalValue = TranslationsCleaner::cleanText($flattenTranslationsBeforeImport[$transKey][$language] ?? null);
+                $importedValue = TranslationsCleaner::cleanText($field->vars['value']);
+
+                if ($originalValue !== $importedValue) {
+                    $field->vars['attr']['class'] = ($field->vars['attr']['class'] ?? '').' sfs-cms-translation-imported';
+                }
+            }
         }
     }
 }

@@ -29,3 +29,26 @@ services:
                     form_invalid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_FORM_INVALID
                     view_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_VIEW
                     exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXCEPTION
+                version_translations_export:
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_INITIALIZE
+                    load_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_ENTITY
+                    found_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_FOUND
+                    not_found_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_NOT_FOUND
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_FAILURE
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_EXPORT_EXCEPTION
+                version_translations_import:
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_INITIALIZE
+                    create_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_ENTITY
+                    form_prepare_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_FORM_PREPARE
+                    form_init_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_FORM_INIT
+                    form_valid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_FORM_VALID
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_FAILURE
+                    form_invalid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_FORM_INVALID
+                    view_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_VIEW
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_CONTENT_VERSIONS_TRANSLATIONS_IMPORT_EXCEPTION
+
+

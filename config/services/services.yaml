@@ -13,3 +13,9 @@ services:
         tags: [ 'sfs_cms.admin_routing_provider' ]
 
     Softspring\CmsTranslationPlugin\Translator\TranslatorExtractor: ~
+
+    Softspring\CmsTranslationPlugin\Exchange\Xliff12Exchanger:
+        tags: [ 'sfs_cms.translation_plugin.exchanger' ]
+
+    Softspring\CmsTranslationPlugin\Exchange\Exchanger:
+        arguments: [!tagged_iterator { tag: 'sfs_cms.translation_plugin.exchanger', default_index_method: 'format' }]
