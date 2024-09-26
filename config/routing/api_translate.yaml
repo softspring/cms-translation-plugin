@@ -1,0 +1,5 @@
+sfs_cms_translation_api_translate:
+    path: /api/translate
+    methods: [POST]
+    defaults:
+        _controller: 'Softspring\CmsTranslationPlugin\Controller\TranslatorController::translate'
