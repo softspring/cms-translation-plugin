@@ -24,6 +24,11 @@ admin_page:
             formats:
                 xliff12: "XLIFF 1.2"
 
+    # todo migrate translations block to version_translations
+    version_translations:
+        success_saved_with_compile_errors: "Translations saved in a new version, but with some compile errors. Please check the version."
+        success_saved: "Translations saved in a new version."
+
     translations_import:
         meta.title: "Import translations"
         title: "Import translations"

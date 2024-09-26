@@ -178,6 +178,12 @@ class TranslationsListener extends AbstractContentVersionListener
         $version = $event->getEntity();
         $content = $version->getContent();
 
+        if ($version->hasCompileErrors()) {
+            $this->flashNotifier->addTrans('warning', "admin_{$contentConfig['_id']}.version_translations.success_saved_with_compile_errors", [], 'sfs_cms_contents');
+        } else {
+            $this->flashNotifier->addTrans('success', "admin_{$contentConfig['_id']}.version_translations.success_saved", [], 'sfs_cms_contents');
+        }
+
         switch ($request->request->get('goto')) {
             case 'content':
                 $url = $this->router->generate("sfs_cms_admin_content_{$contentConfig['_id']}_content", ['content' => $content, 'saved' => 1]);
@@ -212,7 +218,7 @@ class TranslationsListener extends AbstractContentVersionListener
         if ($exception instanceof RenderErrorException) {
             $exception->getRenderErrorList()->formMapErrors($event->getForm());
 
-            $request->attributes->set('_content_version_alert', ['error', 'admin_'.$contentConfig['_id'].'.content.render_error']);
+            $request->attributes->set('_content_version_alert', ['error', 'admin_'.$contentConfig['_id'].'.version_translations.render_error']);
         }
     }
 
@@ -221,7 +227,7 @@ class TranslationsListener extends AbstractContentVersionListener
         $request = $event->getRequest();
         $contentConfig = $request->attributes->get('_content_config');
 
-        $request->attributes->set('_content_version_alert', ['warning', 'admin_'.$contentConfig['_id'].'.content.validation_error']);
+        $request->attributes->set('_content_version_alert', ['warning', 'admin_'.$contentConfig['_id'].'.version_translations.validation_error']);
     }
 
     public function onView(ViewEvent $event): void
