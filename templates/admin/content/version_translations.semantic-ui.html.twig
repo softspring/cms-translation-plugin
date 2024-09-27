@@ -76,7 +76,8 @@
                     {% set module_type = field.vars.attr['data-module-type'] %}
                     {% set module = field.vars.attr['data-module'] %}
                     <tr>
-                        <td colspan="50" class="ui header">
+
+                        <td colspan="50" class="ui header active">
                             {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
                             {% if module_type != 'seo' %}
                                 &gt; <strong>{{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}</strong>
