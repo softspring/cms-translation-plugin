@@ -23,6 +23,8 @@ class SfsCmsTranslationExtension extends Extension // implements PrependExtensio
             $loader->load("api_driver/$driver.yaml");
 
             $container->setParameter('sfs_cms_translation.api.driver', $driver);
+        } else {
+            $container->setParameter('sfs_cms_translation.api.driver', null);
         }
 
         $container->setParameter('sfs_cms_translation.api.enabled', $config['api']['enabled']);
