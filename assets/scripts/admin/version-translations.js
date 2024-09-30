@@ -1,4 +1,10 @@
-window.addEventListener('load', _init);
+(function () {
+    if (!window.__sfs_version_translations_registered) {
+        window.addEventListener('load', _init);
+    }
+    window.__sfs_version_translations_registered = true;
+})();
+
 
 function _init() {
     const translateButtons = document.querySelectorAll('[data-locale-trans-toggler]')
