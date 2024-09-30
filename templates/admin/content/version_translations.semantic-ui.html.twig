@@ -57,30 +57,31 @@
             <tr>
                 <th style="width: 10%">&nbsp;</th>
                 {% for i, locale in content_entity.locales %}
-                    {% set color = (loop.first ? 'active' : 'positive') %}
+                    {% set color = (loop.first ? 'ui message info' : 'ui message') %}
                     {% set currentLocale = locale %}
                     <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                         <div
-                            class="{{ color }}ui center aligned icon header text-{{ colors[i]|default('dark') }}">
+                            class="{{ color }} ui center aligned text-{{ colors[i]|default('dark') }}">
 
                             {% if content_entity.locales|length > 2 and not loop.first %}
-                                <div class="ui dropdown">
-                                    <div class="text">File</div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
+
+                                <div class="ui floated simple dropdown item" tabindex="0">
+                                    <i class="ui language icon big"></i> {{ currentLocale }}
+                                    <i class="dropdown icon" tabindex="0"><div class="menu" tabindex="-1"></div></i>
+                                    <div class="menu" tabindex="-1">
                                         {% for i, locale in content_entity.locales %}
-                                        {% if locale != currentLocale and  not loop.first %}
-                                        <div class="item" data-locale-trans-toggler="{{ locale }}">
-                                            <i class="language icon image"></i>
-                                            {{ locale }}
-                                        </div>
-                                        {% endif %}
+                                            {% if locale != currentLocale and  not loop.first %}
+                                                <div class="item" data-locale-trans-toggler="{{ locale }}">
+                                                    <i class="language icon"></i>
+                                                    {{ locale }}
+                                                </div>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
                             {% else %}
                                 <span>
-                                    <i class="language icon image"></i>
+                                    <i class="language icon big"></i>
                                     {{ locale }}
                                 </span>
                             {% endif %}
@@ -96,7 +97,7 @@
                     {% set module_type = field.vars.attr['data-module-type'] %}
                     {% set module = field.vars.attr['data-module'] %}
                     <tr>
-                        <td colspan="50" class="ui header">
+                        <td colspan="50" class="ui header active">
                             <strong>
                                 {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
                                 {% if module_type != 'seo' %}
