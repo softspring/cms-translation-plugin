@@ -52,18 +52,38 @@
             </div>
         {% endfor %}
 
-        {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %}
-
         {{ form_start(form,{'attr':{'class':'ui form clearing'}}) }}
         <table class="ui table">
             <tr>
                 <th style="width: 10%">&nbsp;</th>
                 {% for i, locale in content_entity.locales %}
-                    <th>
+                    {% set color = (loop.first ? 'active' : 'positive') %}
+                    {% set currentLocale = locale %}
+                    <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                         <div
-                            class="bg-{{ colors[i]|default('dark') }} ui center aligned icon header text-{{ colors[i]|default('dark') }}">
-                            <i class="language icon image"></i>
-                            {{ locale }}
+                            class="{{ color }}ui center aligned icon header text-{{ colors[i]|default('dark') }}">
+
+                            {% if content_entity.locales|length > 2 and not loop.first %}
+                                <div class="ui dropdown">
+                                    <div class="text">File</div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        {% for i, locale in content_entity.locales %}
+                                        {% if locale != currentLocale and  not loop.first %}
+                                        <div class="item" data-locale-trans-toggler="{{ locale }}">
+                                            <i class="language icon image"></i>
+                                            {{ locale }}
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span>
+                                    <i class="language icon image"></i>
+                                    {{ locale }}
+                                </span>
+                            {% endif %}
                         </div>
                     </th>
                 {% endfor %}
@@ -77,10 +97,12 @@
                     {% set module = field.vars.attr['data-module'] %}
                     <tr>
                         <td colspan="50" class="ui header">
-                            {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
-                            {% if module_type != 'seo' %}
-                                &gt; <strong>{{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}</strong>
-                            {% endif %}
+                            <strong>
+                                {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
+                                {% if module_type != 'seo' %}
+                                    &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
+                                {% endif %}
+                            </strong>
                         </td>
                     </tr>
                 {% endif %}
@@ -98,7 +120,7 @@
                     </td>
 
                     {% for locale in content_entity.locales %}
-                        <td>
+                        <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                             {{ form_widget(field.offsetGet(locale)) }}
                         </td>
                     {% endfor %}

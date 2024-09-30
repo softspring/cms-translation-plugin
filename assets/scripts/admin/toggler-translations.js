@@ -16,8 +16,10 @@ function togglerTranslations(translateButton) {
 
         if(locale == targetLocale) {
             row.classList.remove('d-none');
+            row.classList.remove('hidden');
         } else {
             row.classList.add('d-none');
+            row.classList.add('hidden');
         }
     });
 }
