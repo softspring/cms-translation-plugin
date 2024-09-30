@@ -1,2 +1,2 @@
-import './admin/api';
+import './admin/auto-translate';
 import './admin/version-translations';
