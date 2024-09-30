@@ -1,2 +1,2 @@
 import './admin/api';
-import './admin/toggler-translations';
+import './admin/version-translations';
