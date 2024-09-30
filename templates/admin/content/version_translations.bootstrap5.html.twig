@@ -97,31 +97,49 @@
                 {% endfor %}
 
 
-                {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %}
+{#                {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %}#}
                 {{ form_start(form) }}
                 <table class="table">
                     <tr>
                         <th style="width: 10%">&nbsp;</th>
                         {% for i, locale in content_entity.locales %}
-                            <th>
-                                <div class="bg-{{ colors[i]|default('dark') }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
-                                    <i class="bi bi-translate"></i>
-                                    {{ locale }}
+                            {% set color = (loop.first ? 'primary' : 'secondary') %}
+                            {% set currentLocale = locale %}
+                            <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                                <div class="d-flex align-items-center justify-content-between h-100 bg-{{ color }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
 
                                     {% if i > 0 %}
-                                        <div class="float-start">
-                                            <button class="p-2 text-primary bg-white border border-1" type="button"
-                                                    data-translate-all-target-locale="{{ locale }}">
-                                                {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
-                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
-                                                {% endif %}
-                                            </button>
-                                        </div>
+                                        <button class="p-1 text-primary bg-white border border-1 rounded" type="button"
+                                                data-translate-all-target-locale="{{ locale }}">
+                                            {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
+                                            {% endif %}
+                                        </button>
+                                    {% else %}
+                                        <span>&nbsp;</span>
                                     {% endif %}
-
+                                    {% if content_entity.locales|length > 2 and not loop.first %}
+                                    <div class="btn-group">
+                                        <button class="btn btn-link dropdown-toggle px-2 text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-translate"></i> {{ locale }}
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {% for i, locale in content_entity.locales %}
+                                                {% if locale != currentLocale and  not loop.first %}
+                                                <li class="px-2"><button type="button" class="btn btn-link px-0" data-locale-trans-toggler="{{ locale }}"><i class="bi bi-translate"></i> {{ locale }}</button></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% else %}
+                                    <span>
+                                        <i class="bi bi-translate"></i>
+                                        {{ locale }}
+                                    </span>
+                                    {% endif %}
                                     {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
                                         {% if content_config.admin.version_translations_export.formats|length > 1 %}
-                                            <div class="btn-group float-end">
+                                            <div class="btn-group">
                                                 <button type="button" class="btn btn-link dropdown-toggle"
                                                         title="Export"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -137,7 +155,7 @@
                                             </div>
                                         {% else %}
                                             {% set format = content_config.admin.version_translations_export.formats|first %}
-                                            <a class="btn btn-link float-end"
+                                            <a class="btn btn-link float-end p-0"
                                                href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}"
                                                title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
                                                 <i class="bi bi-download"></i>
@@ -156,11 +174,12 @@
                             {% set module_type = field.vars.attr['data-module-type'] %}
                             {% set module = field.vars.attr['data-module'] %}
                             <tr>
-                                <td colspan="50" class="pt-5 pb-2">
-                                    {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
+                                <td colspan="50" class="py-3 bg-light">
+                                    <strong> {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
                                     {% if module_type != 'seo' %}
-                                        &gt; <strong>{{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}</strong>
+                                        &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
                                     {% endif %}
+                                    </strong>
                                 </td>
                             </tr>
                         {% endif %}
@@ -178,7 +197,7 @@
                             </td>
 
                             {% for locale in content_entity.locales %}
-                                <td>
+                                <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                                     {{ form_widget(field.offsetGet(locale)) }}
                                 </td>
                             {% endfor %}
