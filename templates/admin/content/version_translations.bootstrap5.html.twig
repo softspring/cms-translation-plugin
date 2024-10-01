@@ -6,8 +6,7 @@
     'bootstrap_5_layout.html.twig'
     '@SfsCms/forms/routes_theme.html.twig'
     '@SfsCms/forms/types_theme.html.twig'
-    '@SfsCmsTranslationPlugin/admin/content/translation_form_theme.html.twig'
-%}
+    '@SfsCmsTranslationPlugin/forms/translation_form_theme.bootstrap5.html.twig' %}
 
 {% block title %}{{ ('admin_'~content_type~'.translations.meta.title')|trans({'%name%':content_entity.name}) }}{% endblock %}
 
@@ -86,7 +85,8 @@
 
                 {% if app.request.attributes.has('_translations_imported') %}
                     <div class="alert alert-success" role="alert">
-                        Translations imported successfully, review them and <strong>save a new version to apply changes</strong>.
+                        Translations imported successfully, review them and <strong>save a new version to apply
+                            changes</strong>.
                     </div>
                 {% endif %}
 
@@ -97,7 +97,7 @@
                 {% endfor %}
 
 
-{#                {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %}#}
+                {#                {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %} #}
                 {{ form_start(form) }}
                 <table class="table">
                     <tr>
@@ -105,38 +105,48 @@
                         {% for i, locale in content_entity.locales %}
                             {% set color = (loop.first ? 'primary' : 'secondary') %}
                             {% set currentLocale = locale %}
-                            <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                            <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }}
+                                class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                                 <div class="d-flex align-items-center justify-content-between h-100 bg-{{ color }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
 
                                     {% if i > 0 %}
                                         <button class="p-1 text-primary bg-white border border-1 rounded" type="button"
                                                 data-translate-all-target-locale="{{ locale }}">
                                             {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
+                                                     width="16" height="18">
                                             {% endif %}
                                         </button>
                                     {% else %}
                                         <span>&nbsp;</span>
                                     {% endif %}
+
                                     {% if content_entity.locales|length > 2 and not loop.first %}
-                                    <div class="btn-group">
-                                        <button class="btn btn-link dropdown-toggle px-2 text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-translate"></i> {{ locale }}
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            {% for i, locale in content_entity.locales %}
-                                                {% if locale != currentLocale and  not loop.first %}
-                                                <li><button type="button" class="dropdown-item px-2" data-locale-trans-toggler="{{ locale }}"><i class="bi bi-translate"></i> {{ locale }}</button></li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-link dropdown-toggle px-2 text-dark" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-translate"></i> {{ locale }}
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                {% for i, locale in content_entity.locales %}
+                                                    {% if locale != currentLocale and  not loop.first %}
+                                                        <li>
+                                                            <button type="button" class="dropdown-item px-2"
+                                                                    data-locale-trans-toggler="{{ locale }}"><i
+                                                                        class="bi bi-translate"></i> {{ locale }}
+                                                            </button>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     {% else %}
-                                    <span>
-                                        <i class="bi bi-translate"></i>
-                                        {{ locale }}
-                                    </span>
+                                        <span>
+                                            <i class="bi bi-translate"></i>
+                                            {{ locale }}
+                                        </span>
                                     {% endif %}
+
                                     {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
                                         {% if content_config.admin.version_translations_export.formats|length > 1 %}
                                             <div class="btn-group">
@@ -176,9 +186,9 @@
                             <tr>
                                 <td colspan="50" class="py-3 bg-light">
                                     <strong> {{ field.vars.attr['data-module']|split(':')|join(' > ') }}
-                                    {% if module_type != 'seo' %}
-                                        &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
-                                    {% endif %}
+                                        {% if module_type != 'seo' %}
+                                            &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
+                                        {% endif %}
                                     </strong>
                                 </td>
                             </tr>
@@ -197,7 +207,8 @@
                             </td>
 
                             {% for locale in content_entity.locales %}
-                                <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                                <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }}
+                                        class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                                     {{ form_widget(field.offsetGet(locale)) }}
                                 </td>
                             {% endfor %}

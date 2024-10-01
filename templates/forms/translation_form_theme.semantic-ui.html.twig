@@ -1,0 +1,11 @@
+{% block translatable_element_with_api_widget %}
+    <div class="ui left action input">
+        <button class="ui icon left button" type="button" {%- for attr,value in translate_prepend_button.attr %}{{ attr }}="{{ value }}" {% endfor -%}>
+            {% if translate_prepend_button.api_driver == 'google' %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
+            {% endif %}
+        </button>
+        {{- block('translatable_element_widget') -}}
+    </div>
+{% endblock %}
+
