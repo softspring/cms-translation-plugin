@@ -1,37 +1,40 @@
-(function () {
-    if (!window.__sfs_translation_auto_translate_registered) {
-        window.addEventListener('load', _init);
-    }
-    window.__sfs_translation_auto_translate_registered = true;
-})();
+import {registerFeature} from '@softspring/cms-bundle/scripts/tools';
 
+registerFeature('_translation_plugin__admin_auto_translate', _init);
+
+/**
+ * Init behaviour
+ * @private
+ */
 function _init() {
-    document.addEventListener('click', function (event) {
-        let dataTranslate = null;
-        if (event.target.hasAttribute('data-translate')) {
-            dataTranslate = event.target;
-        } else if (event.target.parentNode && event.target.parentNode.hasAttribute('data-translate')) {
-            dataTranslate = event.target.parentNode;
-        }
-        if (dataTranslate) {
-            return doTranslation(dataTranslate);
-        }
+    document.addEventListener('click', onDataTranslateClick);
+}
 
-        let dataTranslateAll = null;
-        if (event.target.hasAttribute('data-translate-all-target-locale')) {
-            dataTranslateAll = event.target;
-        } else if (event.target.parentNode && event.target.parentNode.hasAttribute('data-translate-all-target-locale')) {
-            dataTranslateAll = event.target.parentNode;
-        }
-        if (dataTranslateAll) {
-            let targetLocale = dataTranslateAll.getAttribute('data-translate-all-target-locale');
-            let translateButtons = document.querySelectorAll('[data-translate-target-locale="' + targetLocale + '"]')
-            translateButtons.forEach(function(translateButton) {
-                let targetField = document.querySelector('[name="' + translateButton.getAttribute('data-translate-target-field') + '"]');
-                (targetField.value === "") && translateButton.click()
-            });
-        }
-    });
+function onDataTranslateClick(event) {
+    let dataTranslate = null;
+    if (event.target.hasAttribute('data-translate')) {
+        dataTranslate = event.target;
+    } else if (event.target.parentNode && event.target.parentNode.hasAttribute('data-translate')) {
+        dataTranslate = event.target.parentNode;
+    }
+    if (dataTranslate) {
+        return doTranslation(dataTranslate);
+    }
+
+    let dataTranslateAll = null;
+    if (event.target.hasAttribute('data-translate-all-target-locale')) {
+        dataTranslateAll = event.target;
+    } else if (event.target.parentNode && event.target.parentNode.hasAttribute('data-translate-all-target-locale')) {
+        dataTranslateAll = event.target.parentNode;
+    }
+    if (dataTranslateAll) {
+        let targetLocale = dataTranslateAll.getAttribute('data-translate-all-target-locale');
+        let translateButtons = document.querySelectorAll('[data-translate-target-locale="' + targetLocale + '"]')
+        translateButtons.forEach(function (translateButton) {
+            let targetField = document.querySelector('[name="' + translateButton.getAttribute('data-translate-target-field') + '"]');
+            (targetField.value === "") && translateButton.click()
+        });
+    }
 }
 
 function doTranslation(translateButton) {

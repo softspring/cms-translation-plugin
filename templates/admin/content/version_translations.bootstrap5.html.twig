@@ -126,7 +126,7 @@
                                         <ul class="dropdown-menu">
                                             {% for i, locale in content_entity.locales %}
                                                 {% if locale != currentLocale and  not loop.first %}
-                                                <li class="px-2"><button type="button" class="btn btn-link px-0" data-locale-trans-toggler="{{ locale }}"><i class="bi bi-translate"></i> {{ locale }}</button></li>
+                                                <li><button type="button" class="dropdown-item px-2" data-locale-trans-toggler="{{ locale }}"><i class="bi bi-translate"></i> {{ locale }}</button></li>
                                                 {% endif %}
                                             {% endfor %}
                                         </ul>
