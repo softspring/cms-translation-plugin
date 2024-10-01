@@ -69,7 +69,7 @@ function doTranslation(translateButton) {
 
                 targetField.classList.add('sfs-cms-translated');
             } else {
-                console.log('TRANSLATION ERROR', data);
+                console.log('TRANSLATION ERROR', data.error);
                 targetField.classList.add('sfs-cms-translation-error');
             }
         } catch (e) {

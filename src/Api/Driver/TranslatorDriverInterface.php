@@ -6,5 +6,8 @@ use Softspring\CmsTranslationPlugin\Api\ApiTranslation;
 
 interface TranslatorDriverInterface
 {
+    /**
+     * @throws TranslationException
+     */
     public function translate(string $originText, string $targetLanguage, ?string $sourceLanguage = null, array $options = []): ApiTranslation;
 }

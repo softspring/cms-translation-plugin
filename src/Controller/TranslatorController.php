@@ -2,6 +2,7 @@
 
 namespace Softspring\CmsTranslationPlugin\Controller;
 
+use Softspring\CmsTranslationPlugin\Api\Driver\TranslationException;
 use Softspring\CmsTranslationPlugin\Api\Driver\TranslatorDriverInterface;
 use Softspring\CmsTranslationPlugin\Form\ApiTranslateForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,8 +38,15 @@ class TranslatorController extends AbstractController
         $targetLanguage = $form->getData()['target'];
         $sourceLanguage = $form->getData()['source'];
 
-        $result = $this->translatorApi->translate($originText, $targetLanguage, $sourceLanguage, ['format' => 'html']);
+        try {
+            $result = $this->translatorApi->translate($originText, $targetLanguage, $sourceLanguage, ['format' => 'html']);
 
-        return new JsonResponse($result->toArray());
+            return new JsonResponse($result->toArray());
+        } catch (TranslationException $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

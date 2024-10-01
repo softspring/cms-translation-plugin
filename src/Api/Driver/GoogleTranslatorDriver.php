@@ -30,7 +30,8 @@ class GoogleTranslatorDriver implements TranslatorDriverInterface
             $result = $this->client->translate($originText, $googleOptions);
             $translation->translate($targetLanguage, $result['text'] ?? null);
         } catch (ServiceException $e) {
-            $translation->translate($targetLanguage, null, $e->getMessage());
+            $error = json_decode($e->getMessage(), true)['error'] ?? null;
+            throw new TranslationException($error['message'] ?? $e->getMessage(), $e->getCode(), $e);
         }
 
         return $translation;
