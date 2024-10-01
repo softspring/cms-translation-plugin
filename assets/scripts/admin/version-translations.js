@@ -1,31 +1,25 @@
-(function () {
-    if (!window.__sfs_version_translations_registered) {
-        window.addEventListener('load', _init);
-    }
-    window.__sfs_version_translations_registered = true;
-})();
+import {addTargetEventListener, registerFeature, callForeachSelector} from '@softspring/cms-bundle/scripts/tools';
 
+registerFeature('_translation_plugin__admin_version_translations', _init);
 
+/**
+ * Init behaviour
+ * @private
+ */
 function _init() {
-    const translateButtons = document.querySelectorAll('[data-locale-trans-toggler]')
-    translateButtons.forEach(function (translateButton) {
-        translateButton.addEventListener('click', function (event) {
-            togglerTranslations(translateButton);
-        });
-    });
+    addTargetEventListener('[data-locale-trans-toggler]', 'click', onLocaleChickToggleTranslationsColumn, 1);
 }
 
-function togglerTranslations(translateButton) {
+function onLocaleChickToggleTranslationsColumn(translateButton) {
     const targetLocale = translateButton.getAttribute('data-locale-trans-toggler');
-    document.querySelectorAll('[data-locale-trans]').forEach(function (row) {
-        const locale = row.getAttribute('data-locale-trans');
 
-        if(locale == targetLocale) {
-            row.classList.remove('d-none');
-            row.classList.remove('hidden');
-        } else {
-            row.classList.add('d-none');
-            row.classList.add('hidden');
-        }
+    callForeachSelector(`[data-locale-trans=${targetLocale}]`, function (row) {
+        row.classList.remove('d-none');
+        row.classList.remove('hidden');
+    });
+
+    callForeachSelector(`[data-locale-trans]:not([data-locale-trans=${targetLocale}])`, function (row) {
+        row.classList.add('d-none');
+        row.classList.add('hidden');
     });
 }
