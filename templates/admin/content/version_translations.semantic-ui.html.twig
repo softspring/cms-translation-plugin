@@ -79,13 +79,13 @@
         </div>
 
         {% if app.request.attributes.has('_translations_imported') %}
-            <div class="alert alert-success" role="alert">
+            <div class="ui green message" role="alert">
                 Translations imported successfully, review them and <strong>save a new version to apply changes</strong>.
             </div>
         {% endif %}
 
         {% for warning in importWarnings|default %}
-            <div class="alert alert-warning" role="alert">
+            <div class="ui orange message" role="alert">
                 {{ warning }}
             </div>
         {% endfor %}
@@ -105,10 +105,9 @@
 
                                 {% if sfs_cms_translation.api.driver|default(false) %}
                                     <button class="ui left floated icon button" type="button"
-                                            data-translate-all-target-locale="{{ locale }}">
+                                            data-translate-all-target-locale="{{ locale }}" title="Translate all">
                                         {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
-                                                 width="16" height="18">
+                                            <i class="language icon blue"></i>
                                         {% endif %}
                                     </button>
                                 {% endif %}
