@@ -6,6 +6,7 @@
     '@SyliusUi/Form/theme.html.twig'
     '@SfsCms/forms/routes_theme_semantic.html.twig'
     '@SfsCms/forms/types_theme_semantic.html.twig'
+    '@SfsCmsTranslationPlugin/forms/translation_form_theme.semantic-ui.html.twig'
 %}
 
 {% block title %}{{ ('admin_'~content_type~'.translations.meta.title')|trans({'%name%':content_entity.name}) }}{% endblock %}
@@ -28,15 +29,52 @@
     <div class="ui bottom attached active tab segment">
         <div class="ui right aligned grid clearing" style="margin-bottom: 0">
             <div class="ui buttons column">
-                <a class="ui blue labeled icon button disabled" href="">
-                    <i class="icon upload"></i>
-                    {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
-                </a>
+                {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, entity) %}
+                    <a class="ui blue labeled icon button"
+                       href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':entity, 'back':'translations'}) }}">
+                        <i class="icon upload"></i>
+                        {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
+                    </a>
+                {% else %}
+                    <a class="ui blue labeled icon button disabled" href="">
+                        <i class="icon upload"></i>
+                        {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
+                    </a>
+                {% endif %}
 
-                <a class="ui red labeled icon button disabled" href="">
-                    <i class="icon download"></i>
-                    {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
-                </a>
+
+                {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
+                    {% if content_config.admin.version_translations_export.formats|length > 1 %}
+{#                        <div class="btn-group">#}
+{#                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" title="Export"#}
+{#                                    data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                                <i class="icon download"></i>#}
+{#                                {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}#}
+{#                            </button>#}
+{#                            <ul class="dropdown-menu dropdown-menu-end">#}
+{#                                {% for format in content_config.admin.version_translations_export.formats %}#}
+{#                                    <li><a class="dropdown-item"#}
+{#                                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>#}
+{#                                    </li>#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
+{#                        </div>#}
+                        {# TODO SHOW EXPORT DROPDOWN #}
+                    {% else %}
+                        {% set format = content_config.admin.version_translations_export.formats|first %}
+                        <a class="ui red labeled icon button"
+                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'format': format}) }}"
+                           title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
+                            <i class="icon download"></i>
+                            {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a class="ui red labeled icon button disabled" href="">
+                        <i class="icon download"></i>
+                        {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
+                    </a>
+                {% endif %}
             </div>
         </div>
 
@@ -65,6 +103,16 @@
 
                             {% if content_entity.locales|length > 2 and not loop.first %}
 
+                                {% if sfs_cms_translation.api.driver|default(false) %}
+                                    <button class="ui left floated icon button" type="button"
+                                            data-translate-all-target-locale="{{ locale }}">
+                                        {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
+                                                 width="16" height="18">
+                                        {% endif %}
+                                    </button>
+                                {% endif %}
+
                                 <div class="ui floated simple dropdown item" tabindex="0">
                                     <i class="ui language icon big"></i> {{ currentLocale }}
                                     <i class="dropdown icon" tabindex="0"><div class="menu" tabindex="-1"></div></i>
@@ -84,6 +132,33 @@
                                     <i class="language icon big"></i>
                                     {{ locale }}
                                 </span>
+                            {% endif %}
+
+                            {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
+                                {% if content_config.admin.version_translations_export.formats|length > 1 %}
+{#                                    <div class="btn-group">#}
+{#                                        <button type="button" class="btn btn-link dropdown-toggle"#}
+{#                                                title="Export"#}
+{#                                                data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                                            <i class="icon download"></i>#}
+{#                                        </button>#}
+{#                                        <ul class="dropdown-menu dropdown-menu-end">#}
+{#                                            {% for format in content_config.admin.version_translations_export.formats %}#}
+{#                                                <li><a class="dropdown-item"#}
+{#                                                       href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>#}
+{#                                                </li>#}
+{#                                            {% endfor %}#}
+{#                                        </ul>#}
+{#                                    </div>#}
+                                    {# TODO SHOW EXPORT DROPDOWN #}
+                                {% else %}
+                                    {% set format = content_config.admin.version_translations_export.formats|first %}
+                                    <a class="ui right floated icon button"
+                                       href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}"
+                                       title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
+                                        <i class="icon download"></i>
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </th>

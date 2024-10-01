@@ -1,0 +1,45 @@
+{% trans_default_domain 'sfs_cms_contents' %}
+
+{% extends '@SfsCms/admin_layout_semantic.html.twig' %}
+
+{% form_theme form
+    '@SyliusUi/Form/theme.html.twig'
+    '@SfsCms/forms/routes_theme_semantic.html.twig'
+    '@SfsCms/forms/types_theme_semantic.html.twig'
+    '@SfsCmsTranslationPlugin/forms/translation_form_theme.semantic-ui.html.twig' %}
+
+{% block title %}{{ ('admin_'~content_type~'.translations_import.meta.title')|trans({'%name%':content_entity.name}) }}{% endblock %}
+
+{% block header_title %}{{ ('admin_'~content_type~'.translations_import.title')|trans({'%name%':content_entity.name, '%versionNumber%': prev_version.versionNumber|default('')}) }}{% endblock %}
+{% block header_subtitle %}Manage your page{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <a class="section"
+       href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}">{{ ('admin_'~content_type~'.list.breadcrumb')|trans }}</a>
+    <i class="right chevron icon divider"></i>
+    <a class="section"
+       href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': entity.name}) }}</a>
+    <i class="right chevron icon divider"></i>
+    <a class="section active">{{ ('admin_'~content_type~'.translations_import.breadcrumb')|trans({'%name%':content_entity.name}) }}</a>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'entity':version_entity} %}
+
+    <div class="ui bottom attached active tab segment">
+        {{ form_start(form,{'attr':{'class':'ui form clearing'}}) }}
+        {{ form_rest(form) }}
+
+        <div class="ui hidden divider"></div>
+        <div class="ui buttons">
+            <button class="ui labeled icon primary button" type="submit"><i
+                        class="save icon"></i> {{ ('admin_'~content_type~'.translations_import.actions.import.button')|trans }}
+            </button>
+            <a href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity}) }}"
+               class="ui button">{{ ('admin_'~content_type~'.translations_import.actions.cancel.button')|trans }}</a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock content %}
