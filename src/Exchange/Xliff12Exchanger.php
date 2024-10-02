@@ -158,7 +158,7 @@ class Xliff12Exchanger implements ExchangerInterface
                         // try to apply by resname
                         } elseif ($resName && isset($currentFlattenTranslations[$resName])) {
                             $currentFlattenTranslations[$resName][$targetLanguage] = $target;
-                            $result->addFieldWarning($resName, $targetLanguage, "Translation applied, but this field field could have changed");
+                            $result->addFieldWarning($resName, $targetLanguage, 'Translation applied, but this field field could have changed');
                         } else {
                             $result->addGlobalWarning("Translation not applicable for $transId, maybe module has been deleted");
                         }
