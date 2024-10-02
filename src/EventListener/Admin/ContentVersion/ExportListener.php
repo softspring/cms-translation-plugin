@@ -94,7 +94,7 @@ class ExportListener extends AbstractContentVersionListener
         $version = $request->query->get('version');
 
         if ($version) {
-            $version = $content->getVersions()->filter(fn (ContentVersionInterface $version) => $version->getId() == $version)->first();
+            $version = $content->getVersions()->filter(fn (ContentVersionInterface $versionItem) => $versionItem->getId() == $version)->first();
         }
 
         if (!$version) {

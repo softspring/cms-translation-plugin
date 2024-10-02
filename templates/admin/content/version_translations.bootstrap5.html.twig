@@ -32,7 +32,7 @@
                 <div class="float-end">
                     {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, entity) %}
                         <a class="btn btn-outline-secondary"
-                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':entity, 'back':'translations'}) }}">
+                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':entity, 'back':'translations', 'version':prev_version.id}) }}">
                             <i class="bi bi-upload"></i>
                             {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
                         </a>
@@ -54,7 +54,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     {% for format in content_config.admin.version_translations_export.formats %}
                                         <li><a class="dropdown-item"
-                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'version':prev_version.id, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -62,7 +62,7 @@
                         {% else %}
                             {% set format = content_config.admin.version_translations_export.formats|first %}
                             <a class="btn btn-outline-secondary"
-                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'format': format}) }}"
+                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity, 'back':'translations', 'version':prev_version.id, 'format': format}) }}"
                                title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
                                 <i class="bi bi-download"></i>
                                 {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
@@ -84,14 +84,14 @@
             <div class="col pb-3">
 
                 {% if app.request.attributes.has('_translations_imported') %}
-                    <div class="ui green message" role="alert">
+                    <div class="alert alert-success" role="alert">
                         Translations imported successfully, review them and <strong>save a new version to apply
                             changes</strong>.
                     </div>
                 {% endif %}
 
-                {% for warning in importWarnings|default %}
-                    <div class="ui orange message" role="alert">
+                {% for warning in globalImportWarnings|default %}
+                    <div class="alert alert-warning" role="alert">
                         {{ warning }}
                     </div>
                 {% endfor %}
@@ -158,7 +158,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     {% for format in content_config.admin.version_translations_export.formats %}
                                                         <li><a class="dropdown-item"
-                                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -166,7 +166,7 @@
                                         {% else %}
                                             {% set format = content_config.admin.version_translations_export.formats|first %}
                                             <a class="btn btn-link float-end p-0"
-                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'target':locale, 'format': format}) }}"
+                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}"
                                                title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
                                                 <i class="bi bi-download"></i>
                                             </a>
@@ -210,6 +210,12 @@
                                 <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }}
                                         class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                                     {{ form_widget(field.offsetGet(locale)) }}
+
+                                    {% for warning in fieldImportWarnings[field.vars.name][locale]|default %}
+                                        <div class="alert alert-warning" role="alert">
+                                            {{ warning }}
+                                        </div>
+                                    {% endfor %}
                                 </td>
                             {% endfor %}
                         </tr>

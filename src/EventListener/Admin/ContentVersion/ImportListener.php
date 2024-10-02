@@ -100,6 +100,15 @@ class ImportListener extends AbstractContentVersionListener
 
     public function onCreateEntity(CreateEntityEvent $event): void
     {
+        $versionId = $event->getRequest()->get('version');
+
+        /** @var ContentInterface $content */
+        $content = $event->getRequest()->attributes->get('content');
+
+        $version = $content->getVersions()->filter(fn (ContentVersionInterface $versionI) => $versionI->getId() === $versionId)->first();
+        $event->getRequest()->attributes->set('version', $version);
+
+        // no entity is required for form
         $event->setEntity([]);
     }
 
@@ -118,21 +127,6 @@ class ImportListener extends AbstractContentVersionListener
         $event->setData(null);
     }
 
-    public function onView(ViewEvent $event): void
-    {
-        parent::onView($event);
-
-        $request = $event->getRequest();
-        /** @var ContentInterface $content */
-        $content = $request->attributes->get('content');
-        /** @var ContentVersionInterface $version */
-        $version = $request->attributes->get('version');
-
-        $event->getData()['content_entity'] = $content;
-        $event->getData()['version_entity'] = $version;
-        $event->getData()['prev_version'] = $version;
-    }
-
     /**
      * @throws InvalidContentException
      * @throws ExtractException
@@ -144,14 +138,6 @@ class ImportListener extends AbstractContentVersionListener
         $content = $request->attributes->get('content');
         /** @var ?ContentVersionInterface $version */
         $version = $request->attributes->get('version');
-
-        if ($version) {
-            $version = $content->getVersions()->filter(fn (ContentVersionInterface $version) => $version->getId() == $version)->first();
-        }
-
-        if (!$version) {
-            $version = $content->getLastVersion();
-        }
 
         $file = $event->getForm()->get('file')->getData();
         $dataTranslations = $this->translatorExtractor->extract($version);
@@ -171,15 +157,31 @@ class ImportListener extends AbstractContentVersionListener
         }
 
         if ($importResult->getVersionNumber() != $version->getVersionNumber()) {
-            $importResult->addWarning('Imported translations were for a different version number than the latest one');
+            $importResult->addGlobalWarning("Imported translations were for a different version number (v{$importResult->getVersionNumber()}) than the target one (v{$version->getVersionNumber()})");
         }
 
         $session = $request->getSession();
         $session->set('_translations_imported', $importResult->getFlattenTranslations());
-        $session->set('_translations_warnings', $importResult->getWarnings());
+        $session->set('_translations_global_warnings', $importResult->getGlobalWarnings());
+        $session->set('_translations_field_warnings', $importResult->getFieldWarnings());
         $session->set('_translations_changelog', $importResult->getChangeLog());
 
         $event->setApplied(true);
+    }
+
+    public function onView(ViewEvent $event): void
+    {
+        parent::onView($event);
+
+        $request = $event->getRequest();
+        /** @var ContentInterface $content */
+        $content = $request->attributes->get('content');
+        /** @var ContentVersionInterface $version */
+        $version = $request->attributes->get('version');
+
+        $event->getData()['content_entity'] = $content;
+        $event->getData()['version_entity'] = $version;
+        $event->getData()['prev_version'] = $version;
     }
 
     public function onSuccess(SuccessEvent $event): void
@@ -189,7 +191,7 @@ class ImportListener extends AbstractContentVersionListener
         /** @var ContentInterface $content */
         $content = $request->attributes->get('content');
 
-        $url = $this->router->generate(name: "sfs_cms_admin_content_{$contentConfig['_id']}_translations", parameters: ['content' => $content]);
+        $url = $this->router->generate(name: "sfs_cms_admin_content_{$contentConfig['_id']}_translations", parameters: ['content' => $content, 'version' => $request->query->get('version')]);
         $event->setResponse(new RedirectResponse($url));
     }
 
