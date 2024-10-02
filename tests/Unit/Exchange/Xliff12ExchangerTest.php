@@ -104,7 +104,7 @@ class Xliff12ExchangerTest extends TestCase
         $this->assertEquals(2, $transUnitNodes->length);
 
         $transUnit1 = $transUnitNodes->item(0);
-        $this->assertEquals('test_domain.test_key1', $transUnit1->getAttribute('id'));
+        $this->assertEquals('test1.test_key1', $transUnit1->getAttribute('id'));
         $this->assertEquals('test_key1', $transUnit1->getAttribute('resname'));
         $this->assertEquals('Prueba', $transUnit1->getElementsByTagName('source')->item(0)->nodeValue);
         $this->assertEquals('Test with <b>html</b>', $transUnit1->getElementsByTagName('target')->item(0)->nodeValue);
@@ -228,8 +228,8 @@ TEST1,
         $this->assertEquals($expectedFlattenTranslations, $result->getFlattenTranslations());
 
         // assert other data
-        $this->assertTrue($result->hasWarnings());
-        $this->assertEquals($warnings, $result->getWarnings());
+        $this->assertTrue($result->hasGlobalWarnings());
+        $this->assertEquals($warnings, $result->getGlobalWarnings());
         $this->assertEquals($changeLog, $result->getChangeLog());
 
         // remove test file
