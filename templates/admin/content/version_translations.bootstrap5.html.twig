@@ -84,14 +84,14 @@
             <div class="col pb-3">
 
                 {% if app.request.attributes.has('_translations_imported') %}
-                    <div class="alert alert-success" role="alert">
+                    <div class="ui green message" role="alert">
                         Translations imported successfully, review them and <strong>save a new version to apply
                             changes</strong>.
                     </div>
                 {% endif %}
 
                 {% for warning in importWarnings|default %}
-                    <div class="alert alert-warning" role="alert">
+                    <div class="ui orange message" role="alert">
                         {{ warning }}
                     </div>
                 {% endfor %}
