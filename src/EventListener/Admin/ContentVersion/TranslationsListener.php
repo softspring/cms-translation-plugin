@@ -246,9 +246,14 @@ class TranslationsListener extends AbstractContentVersionListener
         // add prev version
         $event->getData()['prev_version'] = $request->attributes->get('prevVersion');
 
-        if ($request->getSession()->has('_translations_warnings')) {
-            $event->getData()['importWarnings'] = $request->getSession()->get('_translations_warnings');
-            $request->getSession()->remove('_translations_warnings');
+        if ($request->getSession()->has('_translations_global_warnings')) {
+            $event->getData()['globalImportWarnings'] = $request->getSession()->get('_translations_global_warnings');
+            $request->getSession()->remove('_translations_global_warnings');
+        }
+
+        if ($request->getSession()->has('_translations_field_warnings')) {
+            $event->getData()['fieldImportWarnings'] = $request->getSession()->get('_translations_field_warnings');
+            $request->getSession()->remove('_translations_field_warnings');
         }
     }
 

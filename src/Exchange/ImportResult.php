@@ -12,7 +12,8 @@ class ImportResult
 
     protected string $domain;
 
-    protected array $warnings = [];
+    protected array $globalWarnings = [];
+    protected array $fieldWarnings = [];
 
     public function __construct(
         protected array $originalFlattenTranslations,
@@ -62,19 +63,34 @@ class ImportResult
         return $this->domain;
     }
 
-    public function addWarning(string $message): void
+    public function addGlobalWarning(string $message): void
     {
-        $this->warnings[] = $message;
+        $this->globalWarnings[] = $message;
     }
 
-    public function getWarnings(): array
+    public function getGlobalWarnings(): array
     {
-        return $this->warnings;
+        return $this->globalWarnings;
     }
 
-    public function hasWarnings(): bool
+    public function hasGlobalWarnings(): bool
     {
-        return count($this->warnings) > 0;
+        return count($this->globalWarnings) > 0;
+    }
+
+    public function addFieldWarning(string $field, string $targetLanguage, string $message): void
+    {
+        $this->fieldWarnings[$field][$targetLanguage][] = $message;
+    }
+
+    public function getFieldWarnings(?string $field = null): array
+    {
+        return $field ? $this->fieldWarnings[$field] : $this->fieldWarnings;
+    }
+
+    public function hasFieldWarnings(?string $field = null): bool
+    {
+        return count($field ? $this->fieldWarnings[$field] : $this->fieldWarnings) > 0;
     }
 
     public function getOriginalFlattenTranslations(): array

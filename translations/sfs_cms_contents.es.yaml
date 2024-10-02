@@ -31,7 +31,7 @@ admin_page:
 
     translations_import:
         meta.title: "Importar traducciones"
-        title: "Importar traducciones"
+        title: "Importar traducciones (v%versionNumber%)"
         breadcrumb: "Importar traducciones"
         file.label: "Archivo"
         actions:

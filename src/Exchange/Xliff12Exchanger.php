@@ -127,7 +127,7 @@ class Xliff12Exchanger implements ExchangerInterface
 
                     // TODO get notes
 
-                    // apply translation
+                    // apply translation by trans-id
                     $applied = false;
                     foreach ($currentFlattenTranslations as $key => $translation) {
                         if (!is_array($translation)) {
@@ -140,7 +140,7 @@ class Xliff12Exchanger implements ExchangerInterface
                             array_pop($keyParts);
                             $moduleKey = implode(':', $keyParts).':_module';
                             if ($module && ($currentFlattenTranslations[$moduleKey] ?? false) !== $module) {
-                                $result->addWarning("Module not applicable for $transId, maybe module has been changed");
+                                $result->addGlobalWarning("Module not applicable for $transId, maybe module has been changed");
                                 break;
                             }
 
@@ -150,12 +150,17 @@ class Xliff12Exchanger implements ExchangerInterface
                         }
                     }
 
+                    // apply translation by other ways
                     if (!$applied) {
+                        // try to apply by id directly
                         if (isset($currentFlattenTranslations[$transId])) {
                             $currentFlattenTranslations[$transId][$targetLanguage] = $target;
-                            break;
+                        // try to apply by resname
+                        } elseif ($resName && isset($currentFlattenTranslations[$resName])) {
+                            $currentFlattenTranslations[$resName][$targetLanguage] = $target;
+                            $result->addFieldWarning($resName, $targetLanguage, "Translation applied, but this field field could have changed");
                         } else {
-                            $result->addWarning("Translation not applicable for $transId, maybe module has been deleted");
+                            $result->addGlobalWarning("Translation not applicable for $transId, maybe module has been deleted");
                         }
                     }
                 }
@@ -230,7 +235,13 @@ class Xliff12Exchanger implements ExchangerInterface
 
                 $unit = $dom->createElement('trans-unit');
 
-                $unit->setAttribute('id', $fieldTranslation['_trans_id'] ?? "$domain.$fieldKey");
+                // trans-id values
+                // 1st: field _trans_id unique value
+                // 2nd: entity id + field key
+                // 3rd: domain + field key
+                $transId = $fieldTranslation['_trans_id'] ?? (isset($options['ref']['id']) ? "{$options['ref']['id']}.$fieldKey" : "$domain.$fieldKey");
+
+                $unit->setAttribute('id', $transId);
                 $unit->setAttribute('resname', $fieldKey);
                 $currentModule && $unit->setAttribute('data-module', $currentModule);
 
