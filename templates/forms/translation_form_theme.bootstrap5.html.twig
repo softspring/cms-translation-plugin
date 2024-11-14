@@ -1,13 +1,13 @@
-{% block translatable_element_with_api_widget %}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <button class="p-2 text-primary bg-white border border-1" type="button" {%- for attr,value in translate_prepend_button.attr %}{{ attr }}="{{ value }}" {% endfor -%}>
-                {% if translate_prepend_button.api_driver == 'google' %}
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">
-                {% endif %}
-            </button>
-        </div>
-        {{- block('translatable_element_widget') -}}
-    </div>
-{% endblock %}
+{#{% block translatable_element_with_api_widget %}#}
+{#    <div class="input-group mb-3">#}
+{#        <div class="input-group-prepend">#}
+{#            <button class="p-2 text-primary bg-white border border-1" type="button" {%- for attr,value in translate_prepend_button.attr %}{{ attr }}="{{ value }}" {% endfor -%}>#}
+{#                {% if translate_prepend_button.api_driver == 'google' %}#}
+{#                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg" width="16" height="18">#}
+{#                {% endif %}#}
+{#            </button>#}
+{#        </div>#}
+{#        {{- block('translatable_element_widget') -}}#}
+{#    </div>#}
+{#{% endblock %}#}
 

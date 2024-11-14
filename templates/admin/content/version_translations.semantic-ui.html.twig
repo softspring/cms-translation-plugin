@@ -103,10 +103,10 @@
 
                             {% if content_entity.locales|length > 2 and not loop.first %}
 
-                                {% if sfs_cms_translation.api.driver|default(false) %}
+                                {% if sfs_translatable.api.driver|default(false) %}
                                     <button class="ui left floated icon button" type="button"
                                             data-translate-all-target-locale="{{ locale }}" title="Translate all">
-                                        {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
+                                        {% if sfs_translatable.api.driver|default('none') == 'google' %}
                                             <i class="language icon blue"></i>
                                         {% endif %}
                                     </button>
