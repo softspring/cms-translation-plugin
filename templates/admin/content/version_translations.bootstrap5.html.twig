@@ -112,7 +112,7 @@
                                     {% if i > 0 %}
                                         <button class="p-1 text-primary bg-white border border-1 rounded" type="button"
                                                 data-translate-all-target-locale="{{ locale }}">
-                                            {% if sfs_cms_translation.api.driver|default('none') == 'google' %}
+                                            {% if sfs_translatable.api.driver|default('none') == 'google' %}
                                                 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
                                                      width="16" height="18">
                                             {% endif %}
