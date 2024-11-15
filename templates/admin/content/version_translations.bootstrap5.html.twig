@@ -109,10 +109,12 @@
                                 class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
                                 <div class="d-flex align-items-center justify-content-between h-100 bg-{{ color }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
 
-                                    {% if i > 0 %}
+                                    {% if i > 0 and (sfs_translatable.api.driver|default('none')) != 'none' %}
                                         <button class="p-1 text-primary bg-white border border-1 rounded" type="button"
-                                                data-translate-all-target-locale="{{ locale }}">
-                                            {% if sfs_translatable.api.driver|default('none') == 'google' %}
+                                                data-translate-all-target-locale="{{ locale }}"
+                                                title="{{ ('admin_'~content_type~'.translations.actions.translate_all.'~sfs_translatable.api.driver)|trans }}"
+                                        >
+                                            {% if sfs_translatable.api.driver == 'google' %}
                                                 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
                                                      width="16" height="18">
                                             {% endif %}

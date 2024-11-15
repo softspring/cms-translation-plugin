@@ -9,6 +9,7 @@ use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
+use Softspring\TranslatableBundle\Model\Translation;
 
 class TranslatorExtractor
 {
@@ -17,6 +18,50 @@ class TranslatorExtractor
         protected ContentManagerInterface $contentManager,
     ) {
     }
+
+    /**
+     * @throws InvalidContentException
+     * @throws ExtractException
+     */
+    public function statistics(ContentVersionInterface $contentVersion): array
+    {
+        $translations = $this->extract($contentVersion);
+        $flatten = TranslationsTransformer::flatten($translations);
+
+        $defaultLocale = $contentVersion->getContent()->getDefaultLocale();
+        $translationsByLocale = [];
+        $total = 0;
+        foreach ($flatten as $translation) if ($translation instanceof Translation) {
+            if (!$translation[$defaultLocale]) {
+                continue;
+            }
+            $total += 1;
+            foreach ($translation->getTranslations() as $locale => $value) {
+                if (!isset($translationsByLocale[$locale])) {
+                    $translationsByLocale[$locale] = 0;
+                }
+                if (!empty($translation[$locale])) {
+                    $translationsByLocale[$locale] += 1;
+                }
+            }
+        }
+
+        $statistics = [
+            'default_locale' => $defaultLocale,
+            'total' => $total,
+            'locales' => [],
+        ];
+
+        foreach ($translationsByLocale as $locale => $translated) {
+            $statistics['locales'][$locale] = [
+                'translated' => $translated,
+                'percentage' => round($translated / $total * 100, 2),
+            ];
+        }
+
+        return $statistics;
+    }
+
 
     /**
      * @throws ExtractException
@@ -88,9 +133,9 @@ class TranslatorExtractor
         }
     }
 
-    protected function extractFieldTranslations(array $fieldConfig, mixed $fieldValue): ?array
+    protected function extractFieldTranslations(array $fieldConfig, mixed $fieldValue): ?Translation
     {
-        if ('translatable' !== $fieldConfig['type']) {
+        if ('translation' !== $fieldConfig['type']) {
             return null;
         }
 
@@ -98,7 +143,7 @@ class TranslatorExtractor
             return null;
         }
 
-        if (!is_array($fieldValue)) {
+        if (!$fieldValue instanceof Translation) {
             return null;
         }
 

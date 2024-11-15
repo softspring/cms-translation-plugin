@@ -17,3 +17,7 @@ services:
 
     Softspring\CmsTranslationPlugin\Exchange\Exchanger:
         arguments: [!tagged_iterator { tag: 'sfs_cms.translation_plugin.exchanger', default_index_method: 'format' }]
+
+    Softspring\CmsTranslationPlugin\EntityListener\ContentVersionTranslationStatisticsListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'Softspring\CmsBundle\Entity\ContentVersion',  priority: 15 } #, entity_manager: '%sfs_cms.entity_manager_name%' }

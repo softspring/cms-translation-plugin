@@ -1,3 +1,11 @@
+locale:
+    en: "Inglés"
+    es: "Español"
+    fr: "Francés"
+    de: "Alemán"
+    it: "Italiano"
+    pt: "Portugués"
+
 admin_page:
     tabs_menu:
         translations: "Traducciones"
@@ -19,6 +27,8 @@ admin_page:
             save.button: "Guardar nueva versión"
             import_translations.link: "Importar traducciones"
             export_translations.link: "Exportar traducciones"
+            translate_all:
+                google: "Traducir todo automáticamente con Google Translator"
 
         export:
             formats:

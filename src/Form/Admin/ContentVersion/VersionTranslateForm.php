@@ -5,7 +5,7 @@ namespace Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion;
 use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Config\Exception\DisabledModuleException;
 use Softspring\CmsBundle\Config\Exception\InvalidModuleException;
-use Softspring\CmsBundle\Form\Type\TranslatableType;
+use Softspring\CmsBundle\Form\Type\TranslationType;
 use Softspring\CmsBundle\Model\ContentInterface;
 use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
 use Symfony\Component\Form\AbstractType;
@@ -74,7 +74,7 @@ class VersionTranslateForm extends AbstractType
                 $fieldOptions = $moduleConfig['module_options']['form_fields'][$fieldName]['type_options'] ?? [];
             }
 
-            $builder->add($field, TranslatableType::class, [
+            $builder->add($field, TranslationType::class, [
                 'translation_domain' => false,
                 'type' => $fieldOptions['type'] ?? 'text',
                 'attr' => [
