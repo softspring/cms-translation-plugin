@@ -1,8 +1,8 @@
 <?php
 
-namespace Softspring\CmsTranslationPlugin\EventListener\Admin\ContentVersion;
+namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion;
 
-use Softspring\CmsBundle\EventListener\Admin\ContentVersion\BlameListener as BaseBlameListener;
+use Softspring\CmsBundle\Admin\ActionListener\ContentVersion\BlameListener as BaseBlameListener;
 use Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin;
 
 class BlameListener extends BaseBlameListener

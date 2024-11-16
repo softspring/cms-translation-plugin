@@ -4,8 +4,8 @@ services:
         autoconfigure: true
         public: false
 
-    Softspring\CmsTranslationPlugin\EventListener\Admin\ContentVersion\:
-        resource: '../../src/EventListener/Admin/ContentVersion/*'
+    Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion\:
+        resource: '../../src/Admin/ActionListener/ContentVersion/*'
 
     Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\:
         resource: '../../../src/Form/Admin/ContentVersion/*'
