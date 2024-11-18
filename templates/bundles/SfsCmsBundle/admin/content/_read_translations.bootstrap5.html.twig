@@ -25,7 +25,8 @@
             <div class="progress-bar bg-success" style="width: 100%">100%</div>
         </div>
 
-        {% for locale,localeStats in stats.locales|default([]) | filter( (localeStats, locale) => locale != stats.default_locale) %}
+        {% for locale in content.locales | filter( (locale) => locale != content.defaultLocale) %}
+            {% set localeStats = stats.locales[locale]|default({'percentage': 0}) %}
             <p class="d-flex mb-2">
                 <span>{{ ('locale.'~locale)|trans }}</span>
             </p>
