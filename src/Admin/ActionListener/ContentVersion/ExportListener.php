@@ -2,8 +2,8 @@
 
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion;
 
-use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Admin\ActionListener\ContentVersion\AbstractContentVersionListener;
+use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Manager\ContentVersionManagerInterface;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;

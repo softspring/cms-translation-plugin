@@ -31,17 +31,19 @@ class TranslatorExtractor
         $defaultLocale = $contentVersion->getContent()->getDefaultLocale();
         $translationsByLocale = [];
         $total = 0;
-        foreach ($flatten as $translation) if ($translation instanceof Translation) {
-            if (!$translation[$defaultLocale]) {
-                continue;
-            }
-            $total += 1;
-            foreach ($translation->getTranslations() as $locale => $value) {
-                if (!isset($translationsByLocale[$locale])) {
-                    $translationsByLocale[$locale] = 0;
+        foreach ($flatten as $translation) {
+            if ($translation instanceof Translation) {
+                if (!$translation[$defaultLocale]) {
+                    continue;
                 }
-                if (!empty($translation[$locale])) {
-                    $translationsByLocale[$locale] += 1;
+                ++$total;
+                foreach ($translation->getTranslations() as $locale => $value) {
+                    if (!isset($translationsByLocale[$locale])) {
+                        $translationsByLocale[$locale] = 0;
+                    }
+                    if (!empty($translation[$locale])) {
+                        ++$translationsByLocale[$locale];
+                    }
                 }
             }
         }
@@ -61,7 +63,6 @@ class TranslatorExtractor
 
         return $statistics;
     }
-
 
     /**
      * @throws ExtractException

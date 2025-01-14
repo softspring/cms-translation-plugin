@@ -3,9 +3,9 @@
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion;
 
 use Exception;
+use Softspring\CmsBundle\Admin\ActionListener\ContentVersion\AbstractContentVersionListener;
 use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
-use Softspring\CmsBundle\Admin\ActionListener\ContentVersion\AbstractContentVersionListener;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Manager\ContentVersionManagerInterface;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
