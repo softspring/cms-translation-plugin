@@ -101,7 +101,7 @@
                         <div
                             class="{{ color }} ui center aligned text-{{ colors[i]|default('dark') }}">
 
-                            {% if content_entity.locales|length > 2 and not loop.first %}
+                            {% if content_entity.locales|length >= 2 and not loop.first %}
 
                                 {% if sfs_translatable.api.driver|default(false) %}
                                     <button class="ui left floated icon button" type="button"
