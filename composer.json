@@ -2,7 +2,7 @@
     "name": "softspring/cms-translation-plugin",
     "description": "A translation extension for softspring cms",
     "type": "sfs-cms-plugin",
-    "license": "MIT",
+    "license": "AGPL-3.0",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
