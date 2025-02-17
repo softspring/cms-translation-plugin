@@ -8,6 +8,7 @@ use DOMText;
 use ErrorException;
 use Exception;
 use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
+use Softspring\TranslatableBundle\Model\Translation;
 use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -225,6 +226,8 @@ class Xliff12Exchanger implements ExchangerInterface
             $xliffBody = $xliffFile->appendChild($dom->createElement('body'));
             $currentModule = null;
             foreach ($flattenTranslations as $fieldKey => $fieldTranslation) {
+                $fieldTranslation = $fieldTranslation instanceof Translation ? $fieldTranslation->__toArray() : $fieldTranslation;
+
                 $fieldKeyParts = explode(':', $fieldKey);
                 if ('_module' === array_pop($fieldKeyParts)) {
                     $currentModule = $fieldTranslation;
