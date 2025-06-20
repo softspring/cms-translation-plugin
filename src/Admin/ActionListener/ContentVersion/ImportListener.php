@@ -105,7 +105,7 @@ class ImportListener extends AbstractContentVersionListener
         /** @var ContentInterface $content */
         $content = $event->getRequest()->attributes->get('content');
 
-        $version = $content->getVersions()->filter(fn (ContentVersionInterface $versionI) => $versionI->getId() === $versionId)->first();
+        $version = $this->contentVersionManager->getRepository()->findOneBy(['content' => $content, 'id' => $versionId]);
         $event->getRequest()->attributes->set('version', $version);
 
         // no entity is required for form
