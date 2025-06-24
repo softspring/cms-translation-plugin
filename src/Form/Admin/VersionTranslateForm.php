@@ -1,12 +1,11 @@
 <?php
 
-namespace Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion;
+namespace Softspring\CmsTranslationPlugin\Form\Admin;
 
 use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Config\Exception\DisabledModuleException;
 use Softspring\CmsBundle\Config\Exception\InvalidModuleException;
 use Softspring\CmsBundle\Form\Type\TranslationType;
-use Softspring\CmsBundle\Model\ContentInterface;
 use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,17 +23,9 @@ class VersionTranslateForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'content_type' => null,
-            'content_config' => null,
             'flatten_translations' => null,
             'flatten_translations_before_importing' => null,
         ]);
-
-        $resolver->setRequired('content_type');
-        $resolver->setAllowedTypes('content_type', ['string']);
-
-        $resolver->setRequired('content');
-        $resolver->setAllowedTypes('content', [ContentInterface::class]);
 
         $resolver->setRequired('flatten_translations');
         $resolver->setAllowedTypes('flatten_translations', ['array']);

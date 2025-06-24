@@ -20,5 +20,6 @@ class SfsCmsTranslationExtension extends Extension // implements PrependExtensio
         // load services
         $loader->load('services.yaml');
         $loader->load('controller/admin_content_version.yaml');
+        $loader->load('controller/admin_section_version.yaml');
     }
 }

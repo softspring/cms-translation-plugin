@@ -1,0 +1,57 @@
+locale:
+    en: "Inglés"
+    es: "Español"
+    fr: "Francés"
+    de: "Alemán"
+    it: "Italiano"
+    pt: "Portugués"
+
+admin_sections:
+    tabs_menu:
+        translations: "Traducciones"
+
+# es	sfs_cms_admin	1	admin_sections.translations.meta.title (Show parameters) admin_sections.translations.meta.title
+# es	sfs_cms_admin	1	admin_sections.translations.breadcrumb (Show parameters) admin_sections.translations.breadcrumb
+# es	sfs_cms_admin	1	admin_sections.translations.title (Show parameters) admin_sections.translations.title
+# es	sfs_cms_admin	1	admin_sections.translations.actions.import_translations.link	admin_sections.translations.actions.import_translations.link
+# es	sfs_cms_admin	1	admin_sections.translations.export.formats.xliff	admin_sections.translations.export.formats.xliff
+# es	sfs_cms_admin	1	admin_sections.translations.actions.export_translations.link	admin_sections.translations.actions.export_translations.link
+# es	sfs_cms_admin	1	admin_sections.translations.actions.translate_all.google	admin_sections.translations.actions.translate_all.google
+# es	sfs_cms_admin	1	admin_sections.translations.actions.cancel.button	admin_sections.translations.actions.cancel.button
+# es	sfs_cms_admin	1	admin_sections.translations.actions.save.button	admin_sections.translations.actions.save.button
+
+    read:
+        translations:
+            edit.link: "Editar"
+
+    translations:
+        meta.title: "Traducciones"
+        breadcrumb: "Traducciones"
+        title: "Traducciones"
+        actions:
+            import_translations:
+                link: "Importar traducciones"
+            export_translations:
+                link: "Exportar traducciones"
+            translate_all:
+                google: "Traducir todo con Google"
+            cancel:
+                button: "Cancelar"
+            save:
+                button: "Guardar"
+        export:
+            formats:
+                xliff: "XLIFF"
+
+    version_translations:
+        success_saved: "Traducciones guardadas correctamente"
+
+
+    translations_import:
+        meta.title: "Importar traducciones"
+        title: "Importar traducciones (v%versionNumber%)"
+        breadcrumb: "Importar traducciones"
+        file.label: "Archivo"
+        actions:
+            cancel.button: "Cancelar"
+            import.button: "Cargar traducciones"

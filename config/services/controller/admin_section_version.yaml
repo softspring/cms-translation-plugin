@@ -1,0 +1,61 @@
+parameters:
+    sfs_cms.admin.sections.translations_view: '@@SfsCms/admin/section/version_translations.html.twig'
+    sfs_cms.admin.sections.translations_import_view: '@@SfsCms/admin/section/version_translations_import.html.twig'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion\:
+        resource: '../../src/Admin/ActionListener/SectionVersion/*'
+
+    sfs_cms.translation_plugin.admin.section_version.controller:
+        class: Softspring\Component\CrudlController\Controller\CrudlController
+        public: true
+        arguments:
+            $manager: '@Softspring\CmsBundle\Manager\SectionVersionManagerInterface'
+            $configs:
+                entity_attribute: 'version'
+                version_translations:
+                    is_granted: 'PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS'
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_INITIALIZE
+                    create_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_ENTITY
+                    form_prepare_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_FORM_PREPARE
+                    form_init_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_FORM_INIT
+                    form_valid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_FORM_VALID
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_FAILURE
+                    form_invalid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_FORM_INVALID
+                    view_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_VIEW
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXCEPTION
+                    form: 'Softspring\CmsTranslationPlugin\Form\Admin\VersionTranslateForm'
+                    view: '%sfs_cms.admin.sections.translations_view%'
+                version_translations_export:
+                    is_granted: 'PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT'
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_INITIALIZE
+                    load_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_ENTITY
+                    found_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_FOUND
+                    not_found_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_NOT_FOUND
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_FAILURE
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_EXCEPTION
+                version_translations_import:
+                    is_granted: 'PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_IMPORT'
+                    initialize_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_INITIALIZE
+                    create_entity_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_ENTITY
+                    form_prepare_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_PREPARE
+                    form_init_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_INIT
+                    form_valid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_VALID
+                    apply_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_APPLY
+                    success_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_SUCCESS
+                    failure_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FAILURE
+                    form_invalid_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_INVALID
+                    view_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_VIEW
+                    exception_event_name: !php/const Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_EXCEPTION
+                    form: 'Softspring\CmsTranslationPlugin\Form\Admin\VersionTranslationsImportForm'
+                    view: '%sfs_cms.admin.sections.translations_import_view%'
+

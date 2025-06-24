@@ -4,8 +4,8 @@ namespace Softspring\CmsTranslationPlugin\Config\Model;
 
 use Softspring\CmsBundle\Config\Model\ConfigExtensionInterface;
 use Softspring\CmsBundle\Config\Model\Content;
-use Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\VersionTranslateForm;
-use Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\VersionTranslationsImportForm;
+use Softspring\CmsTranslationPlugin\Form\Admin\VersionTranslateForm;
+use Softspring\CmsTranslationPlugin\Form\Admin\VersionTranslationsImportForm;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 

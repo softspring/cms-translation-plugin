@@ -1,11 +1,3 @@
-locale:
-    en: "English"
-    es: "Spanish"
-    fr: "French"
-    de: "German"
-    it: "Italian"
-    pt: "Portuguese"
-
 admin_page:
     tabs_menu:
         translations: "Translations"
