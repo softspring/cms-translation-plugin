@@ -1,0 +1,186 @@
+{% trans_default_domain 'sfs_cms_admin' %}
+
+{% extends '@SfsCms/admin_layout_semantic.html.twig' %}
+
+{% set export_formats = ['xliff12'] %}
+
+{% form_theme form
+    '@SyliusUi/Form/theme.html.twig'
+    '@SfsCms/forms/routes_theme_semantic.html.twig'
+    '@SfsCms/forms/types_theme_semantic.html.twig'
+    '@SfsCmsTranslationPlugin/forms/translation_form_theme.semantic-ui.html.twig'
+%}
+
+{% block header_title %}{{ ('admin_sections.translations.title')|trans({'%name%':section_entity.name}) }}{% endblock %}
+{% block header_subtitle %}Manage your section{% endblock %}
+{% block header_icon %}th{% endblock %}
+
+{% block title %}{{ ('admin_sections.translations.meta.title')|trans({'%name%':section_entity.name}) }}{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <a class="section" href="{{ url('sfs_cms_admin_sections_list') }}">{{ ('admin_sections.list.breadcrumb')|trans }}</a>
+    <i class="right chevron icon divider"></i>
+    <a class="section" href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity}) }}">{{ ('admin_sections.read.breadcrumb')|trans({'%name%': section_entity.name}) }}</a>
+    <i class="right chevron icon divider"></i>
+    <a class="section active">{{ ('admin_sections.translations.breadcrumb')|trans({'%name%':section_entity.name}) }}</a>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    {% include '@SfsCms/admin/section/_section_tabs.html.twig'  with {'current':'translations', 'section_entity':section_entity} %}
+
+    <div class="ui bottom attached active tab segment">
+        <div class="ui right aligned grid clearing" style="margin-bottom: 0">
+            <div class="ui buttons column">
+                {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_IMPORT', section_entity) %}
+                    <a class="ui blue labeled icon button"
+                       href="{{ url('sfs_cms_admin_sections_translations_import', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id}) }}">
+                        <i class="icon upload"></i>
+                        {{ ('admin_sections.translations.actions.import_translations.link')|trans }}
+                    </a>
+                {% else %}
+                    <a class="ui blue labeled icon button disabled">
+                        <i class="icon upload"></i>
+                        {{ ('admin_sections.translations.actions.import_translations.link')|trans }}
+                    </a>
+                {% endif %}
+
+                {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT', section_entity) %}
+                    {% if export_formats|length > 1 %}
+                        {# TODO: Semantic UI dropdown for export formats #}
+                    {% else %}
+                        {% set format = export_formats|first %}
+                        <a class="ui red labeled icon button"
+                           href="{{ url('sfs_cms_admin_sections_translations_export_all', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}"
+                           title="{{ ('admin_sections.translations.export.formats.'~format)|trans }}">
+                            <i class="icon download"></i>
+                            {{ ('admin_sections.translations.actions.export_translations.link')|trans }}
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a class="ui red labeled icon button disabled">
+                        <i class="icon download"></i>
+                        {{ ('admin_sections.translations.actions.export_translations.link')|trans }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if app.request.attributes.has('_translations_imported') %}
+            <div class="ui green message" role="alert">
+                Translations imported successfully, review them and <strong>save a new version to apply changes</strong>.
+            </div>
+        {% endif %}
+
+        {% for warning in globalImportWarnings|default %}
+            <div class="ui orange message" role="alert">
+                {{ warning }}
+            </div>
+        {% endfor %}
+
+        {{ form_start(form,{'attr':{'class':'ui form clearing'}}) }}
+        <table class="ui table">
+            <tr>
+                <th style="width: 10%">&nbsp;</th>
+                {% for i, locale in section_entity.locales %}
+                    {% set color = (loop.first ? 'ui message info' : 'ui message') %}
+                    {% set currentLocale = locale %}
+                    <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                        <div class="{{ color }} ui center aligned text-{{ colors[i]|default('dark') }}">
+                            {% if section_entity.locales|length >= 2 and not loop.first %}
+                                {% if sfs_translatable.api.driver|default(false) %}
+                                    <button class="ui left floated icon button" type="button"
+                                            data-translate-all-target-locale="{{ locale }}" title="Translate all">
+                                        {% if sfs_translatable.api.driver|default('none') == 'google' %}
+                                            <i class="language icon blue"></i>
+                                        {% endif %}
+                                    </button>
+                                {% endif %}
+
+                                <div class="ui floated simple dropdown item" tabindex="0">
+                                    <i class="ui language icon big"></i> {{ currentLocale }}
+                                    <i class="dropdown icon" tabindex="0"><div class="menu" tabindex="-1"></div></i>
+                                    <div class="menu" tabindex="-1">
+                                        {% for i, locale in section_entity.locales %}
+                                            {% if locale != currentLocale and  not loop.first %}
+                                                <div class="item" data-locale-trans-toggler="{{ locale }}">
+                                                    <i class="language icon"></i>
+                                                    {{ locale }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span>
+                                    <i class="language icon big"></i>
+                                    {{ locale }}
+                                </span>
+                            {% endif %}
+
+                            {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT', section_entity) %}
+                                {% if export_formats|length > 1 %}
+                                    {# TODO: Semantic UI dropdown for export formats per locale #}
+                                {% else %}
+                                    {% set format = export_formats|first %}
+                                    <a class="ui right floated icon button"
+                                       href="{{ url('sfs_cms_admin_sections_translations_export', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}"
+                                       title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
+                                        <i class="icon download"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </th>
+                {% endfor %}
+            </tr>
+
+            {% set module_type = '' %}
+            {% set module = '' %}
+            {% for field in form|filter( (field) => field.vars.attr['data-module']|default(false) ) %}
+                {% if field.vars.attr['data-module-type'] != module_type or field.vars.attr['data-module'] != module %}
+                    {% set module_type = field.vars.attr['data-module-type'] %}
+                    {% set module = field.vars.attr['data-module'] %}
+                    <tr>
+                        <td colspan="50" class="ui header active">
+                            <strong>
+                                {{ field.vars.attr['data-module']|split(':')|slice(1, 10000)|join(' > ') }}
+                                &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
+                            </strong>
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    {# <td>{{ field.vars.name }}</td> #}
+                    <td>
+                        {{ (module_type~'.form.'~field.vars.attr['data-module-field']~'.label')|trans({}, 'sfs_cms_modules') }}
+                        {{ form_widget(field._trans_id) }}
+                        {{ form_widget(field._default) }}
+                    </td>
+
+                    {% for locale in section_entity.locales %}
+                        <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }} class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                            {{ form_widget(field.offsetGet(locale)) }}
+
+                            {% for warning in fieldImportWarnings[field.vars.name][locale]|default %}
+                                <div class="ui orange message" role="alert">
+                                    {{ warning }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        {{ form_rest(form) }}
+
+        <div class="ui hidden divider"></div>
+        <div class="ui buttons">
+            <button class="ui labeled icon primary button" type="submit"><i class="save icon"></i> {{ ('admin_sections.translations.actions.save.button')|trans }}</button>
+            <a href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity.id}) }}" class="ui button">{{ ('admin_sections.translations.actions.cancel.button')|trans }}</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock content %}

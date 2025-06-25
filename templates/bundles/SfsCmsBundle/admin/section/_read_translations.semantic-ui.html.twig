@@ -1,0 +1,54 @@
+{% trans_default_domain 'sfs_cms_admin' %}
+
+{% embed '@SfsCms/admin/_embeds/_card.html.twig' with {'title': ('admin_sections.read.translations.title')|trans} %}
+    {% trans_default_domain 'sfs_cms_admin' %}
+
+    {% block title %}
+        {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS', section_entity) %}
+            <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_sections_translations', {'section':section_entity.id}) }}">
+                {{ ('admin_sections.read.translations.edit.link')|trans }} <i class="language icon"></i>
+            </a>
+        {% else %}
+            <a class="ui mini basic disabled button right floated">
+                {{ ('admin_sections.read.translations.edit.link')|trans }} <i class="language icon"></i>
+            </a>
+        {% endif %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block content %}
+        {% set stats = section_entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
+
+        <div class="ui horizontal list" style="margin-bottom: 1em;">
+            <div class="item">
+                <div class="content">
+                    <div class="header">{{ ('locale.'~section_entity.defaultLocale)|trans }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui progress success" data-percent="100" style="margin-bottom: 1em;">
+            <div class="bar" style="width: 100%;">
+                <div class="progress">100%</div>
+            </div>
+        </div>
+
+        {% for locale in section.locales | filter( (locale) => locale != section.defaultLocale) %}
+            {% set localeStats = stats.locales[locale]|default({'percentage': 0}) %}
+            <div class="ui horizontal list" style="margin-bottom: 1em;">
+                <div class="item">
+                    <div class="content">
+                        <div class="header">{{ ('locale.'~locale)|trans }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {% set color = localeStats.percentage < 25 ? 'red' : (localeStats.percentage < 95 ? 'yellow' : 'green') %}
+            <div class="ui progress {{ color }}" data-percent="{{ localeStats.percentage|round }}" style="margin-bottom: 1em;">
+                <div class="bar" style="width: {{ localeStats.percentage|round }}%;">
+                    <div class="progress">{{ localeStats.percentage|round }}%</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endblock %}
+{% endembed %}
