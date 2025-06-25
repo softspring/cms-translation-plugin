@@ -1,0 +1,46 @@
+locale:
+    en: "English"
+    es: "Spanish"
+    fr: "French"
+    de: "German"
+    it: "Italian"
+    pt: "Portuguese"
+
+admin_sections:
+    tabs_menu:
+        translations: "Translations"
+
+    read:
+        translations:
+            edit.link: "Edit"
+
+    translations:
+        meta.title: "Translations"
+        breadcrumb: "Translations"
+        title: "Translations"
+        actions:
+            import_translations:
+                link: "Import translations"
+            export_translations:
+                link: "Export translations"
+            translate_all:
+                google: "Translate all with Google"
+            cancel:
+                button: "Cancel"
+            save:
+                button: "Save"
+        export:
+            formats:
+                xliff: "XLIFF"
+
+    version_translations:
+        success_saved: "Translations saved successfully"
+
+    translations_import:
+        meta.title: "Import translations"
+        title: "Import translations (v%versionNumber%)"
+        breadcrumb: "Import translations"
+        file.label: "File"
+        actions:
+            cancel.button: "Cancel"
+            import.button: "Upload translations"
