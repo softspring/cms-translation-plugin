@@ -1,0 +1,235 @@
+{% trans_default_domain 'sfs_cms_admin' %}
+
+{% extends '@SfsCms/admin_layout.html.twig' %}
+
+{% set export_formats = ['xliff12'] %}
+
+{% form_theme form
+    'bootstrap_5_layout.html.twig'
+    '@SfsCms/forms/routes_theme.html.twig'
+    '@SfsCms/forms/types_theme.html.twig'
+    '@SfsCmsTranslationPlugin/forms/translation_form_theme.bootstrap5.html.twig' %}
+
+{% block title %}{{ ('admin_sections.translations.meta.title')|trans({'%name%':section_entity.name}) }}{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a
+                href="{{ url('sfs_cms_admin_sections_list') }}">{{ ('admin_sections.list.breadcrumb')|trans }}</a>
+    </li>
+    <li class="breadcrumb-item"><a
+                href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity}) }}">{{ ('admin_sections.read.breadcrumb')|trans({'%name%': section_entity.name}) }}</a>
+    </li>
+    <li class="breadcrumb-item active"
+        aria-current="section">{{ ('admin_sections.translations.breadcrumb')|trans({'%name%':section_entity.name}) }}</li>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    {% include '@SfsCms/admin/section/_section_title.html.twig'  with {'current':'translations', 'section_entity':section_entity, 'version_entity': prev_version|default(false)} %}
+    {% include '@SfsCms/admin/section/_section_tabs.html.twig'  with {'current':'translations', 'section_entity':section_entity} %}
+
+    <div class="container-fluid mb-3">
+        <div class="row">
+            <div class="col">
+                <div class="float-end">
+                    {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_IMPORT', section_entity) %}
+                        <a class="btn btn-outline-secondary"
+                           href="{{ url('sfs_cms_admin_sections_translations_import', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id}) }}">
+                            <i class="bi bi-upload"></i>
+                            {{ ('admin_sections.translations.actions.import_translations.link')|trans }}
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-secondary disabled">
+                            <i class="bi bi-upload"></i>
+                            {{ ('admin_sections.translations.actions.import_translations.link')|trans }}
+                        </a>
+                    {% endif %}
+
+                    {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT', section_entity) %}
+                        {% if export_formats|length > 1 %}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle" title="Export"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-download"></i>
+                                    {{ ('admin_sections.translations.actions.export_translations.link')|trans }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    {% for format in export_formats %}
+                                        <li><a class="dropdown-item"
+                                               href="{{ url('sfs_cms_admin_sections_translations_export_all', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            {% set format = export_formats|first %}
+                            <a class="btn btn-outline-secondary"
+                               href="{{ url('sfs_cms_admin_sections_translations_export_all', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}"
+                               title="{{ ('admin_sections.translations.export.formats.'~format)|trans }}">
+                                <i class="bi bi-download"></i>
+                                {{ ('admin_sections.translations.actions.export_translations.link')|trans }}
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a class="btn btn-outline-secondary disabled">
+                            <i class="bi bi-download"></i>
+                            {{ ('admin_sections.translations.actions.export_translations.link')|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-white">
+        <div class="row">
+            <div class="col pb-3">
+
+                {% if app.request.attributes.has('_translations_imported') %}
+                    <div class="alert alert-success" role="alert">
+                        Translations imported successfully, review them and <strong>save a new version to apply
+                            changes</strong>.
+                    </div>
+                {% endif %}
+
+                {% for warning in globalImportWarnings|default %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ warning }}
+                    </div>
+                {% endfor %}
+
+
+                {#                {% set colors = [ 'primary', 'secondary', 'info', 'success', 'warning', 'danger' ] %} #}
+                {{ form_start(form) }}
+                <table class="table">
+                    <tr>
+                        <th style="width: 10%">&nbsp;</th>
+                        {% for i, locale in section_entity.locales %}
+                            {% set color = (loop.first ? 'primary' : 'secondary') %}
+                            {% set currentLocale = locale %}
+                            <th style="height: 50px" {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }}
+                                class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                                <div class="d-flex align-items-center justify-section-between h-100 bg-{{ color }} p-2 bg-opacity-10 text-center p-3 text-{{ colors[i]|default('dark') }}">
+
+                                    {% if i > 0 and (sfs_translatable.api.driver|default('none')) != 'none' %}
+                                        <button class="p-1 text-primary bg-white border border-1 rounded" type="button"
+                                                data-translate-all-target-locale="{{ locale }}"
+                                                title="{{ ('admin_sections.translations.actions.translate_all.'~sfs_translatable.api.driver)|trans }}"
+                                        >
+                                            {% if sfs_translatable.api.driver == 'google' %}
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg"
+                                                     width="16" height="18">
+                                            {% endif %}
+                                        </button>
+                                    {% else %}
+                                        <span>&nbsp;</span>
+                                    {% endif %}
+
+                                    {% if section_entity.locales|length > 2 and not loop.first %}
+                                        <div class="btn-group">
+                                            <button class="btn btn-link dropdown-toggle px-2 text-dark" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-translate"></i> {{ locale }}
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                {% for i, locale in section_entity.locales %}
+                                                    {% if locale != currentLocale and  not loop.first %}
+                                                        <li>
+                                                            <button type="button" class="dropdown-item px-2"
+                                                                    data-locale-trans-toggler="{{ locale }}"><i
+                                                                        class="bi bi-translate"></i> {{ locale }}
+                                                            </button>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        <span>
+                                            <i class="bi bi-translate"></i>
+                                            {{ locale }}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if not is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS_EXPORT', section_entity) %}
+                                        {% if export_formats|length > 1 %}
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-link dropdown-toggle"
+                                                        title="Export"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    {% for format in export_formats %}
+                                                        <li><a class="dropdown-item"
+                                                               href="{{ url('sfs_cms_admin_sections_translations_export', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {% set format = export_formats|first %}
+                                            <a class="btn btn-link float-end p-0"
+                                               href="{{ url('sfs_cms_admin_sections_translations_export', {'section':section_entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}"
+                                               title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </th>
+                        {% endfor %}
+                    </tr>
+
+                    {% set module_type = '' %}
+                    {% set module = '' %}
+                    {% for field in form|filter( (field) => field.vars.attr['data-module']|default(false) ) %}
+                        {% if field.vars.attr['data-module-type'] != module_type or field.vars.attr['data-module'] != module %}
+                            {% set module_type = field.vars.attr['data-module-type'] %}
+                            {% set module = field.vars.attr['data-module'] %}
+                            <tr>
+                                <td colspan="50" class="py-3 bg-light">
+                                    <strong> {{ field.vars.attr['data-module']|split(':')|slice(1, 10000)|join(' > ') }}
+                                        &gt; {{ (module_type~'.label')|trans({}, 'sfs_cms_modules') }}
+                                    </strong>
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        <tr>
+                            {# <td>{{ field.vars.name }}</td> #}
+                            <td>
+                                {{ (module_type~'.form.'~field.vars.attr['data-module-field']~'.label')|trans({}, 'sfs_cms_modules') }}
+                                {{ form_widget(field._trans_id) }}
+                                {{ form_widget(field._default) }}
+                            </td>
+
+                            {% for locale in section_entity.locales %}
+                                <td {{ loop.first ? 'data-default-locale-trans='~locale : 'data-locale-trans='~locale }}
+                                        class="{{ loop.index > 2 ? 'd-none hidden' :'' }}">
+                                    {{ form_widget(field.offsetGet(locale)) }}
+
+                                    {% for warning in fieldImportWarnings[field.vars.name][locale]|default %}
+                                        <div class="alert alert-warning" role="alert">
+                                            {{ warning }}
+                                        </div>
+                                    {% endfor %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {{ form_rest(form) }}
+
+                <div class="d-flex justify-section-end align-items-center">
+                    <a href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity.id}) }}"
+                       class="btn btn-outline-secondary">{{ ('admin_sections.translations.actions.cancel.button')|trans }}</a>
+                    <input type="submit" value="{{ ('admin_sections.translations.actions.save.button')|trans }}"
+                           class="btn btn-primary ms-3"/>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

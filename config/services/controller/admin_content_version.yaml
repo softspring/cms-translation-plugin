@@ -7,8 +7,8 @@ services:
     Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion\:
         resource: '../../src/Admin/ActionListener/ContentVersion/*'
 
-    Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\:
-        resource: '../../../src/Form/Admin/ContentVersion/*'
+#    Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion\:
+#        resource: '../../../src/Form/Admin/ContentVersion/*'
 
     sfs_cms.translation_plugin.admin.content_version.controller:
         class: Softspring\Component\CrudlController\Controller\CrudlController

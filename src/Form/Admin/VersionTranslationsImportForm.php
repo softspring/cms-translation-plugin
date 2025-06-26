@@ -1,8 +1,7 @@
 <?php
 
-namespace Softspring\CmsTranslationPlugin\Form\Admin\ContentVersion;
+namespace Softspring\CmsTranslationPlugin\Form\Admin;
 
-use Softspring\CmsBundle\Model\ContentInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,17 +16,18 @@ class VersionTranslationsImportForm extends AbstractType
         $resolver->setDefaults([
             'translation_domain' => 'sfs_cms_contents',
             'content_type' => null,
-            'content_config' => null,
+            'section' => null,
         ]);
 
-        $resolver->setRequired('content_type');
-        $resolver->setAllowedTypes('content_type', ['string']);
-
-        $resolver->setRequired('content');
-        $resolver->setAllowedTypes('content', [ContentInterface::class]);
+        $resolver->setAllowedTypes('content_type', ['string', 'null']);
 
         $resolver->setNormalizer('label_format', function (Options $options, $value) {
-            return "admin_{$options['content_type']}.translations_import.%name%.label";
+            return $options['content_type'] ? "admin_{$options['content_type']}.translations_import.%name%.label"
+                : 'admin_sections.translations_import.%name%.label';
+        });
+
+        $resolver->setNormalizer('translation_domain', function (Options $options, $value) {
+            return $options['content_type'] ? 'sfs_cms_contents' : 'sfs_cms_admin';
         });
     }
 

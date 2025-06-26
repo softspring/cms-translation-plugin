@@ -119,9 +119,9 @@ class ImportListener extends AbstractContentVersionListener
         $event->setType($this->getOption($event->getRequest(), 'type'));
         $event->setFormOptions([
             'method' => 'POST',
-            'content_config' => $contentConfig,
+            // 'content_config' => $contentConfig,
             'content_type' => $contentConfig['_id'],
-            'content' => $event->getRequest()->attributes->get('content'),
+            // 'content' => $event->getRequest()->attributes->get('content'),
         ]);
 
         $event->setData(null);

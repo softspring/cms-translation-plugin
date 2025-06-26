@@ -1,31 +1,31 @@
-{% trans_default_domain 'sfs_cms_contents' %}
+{% trans_default_domain 'sfs_cms_admin' %}
 
-{% embed '@SfsCms/admin/_embeds/_card.html.twig' with {'title': ('admin_'~content_type~'.read.translations.title')|trans} %}
-    {% trans_default_domain 'sfs_cms_contents' %}
+{% embed '@SfsCms/admin/_embeds/_card.html.twig' with {'title': ('admin_sections.read.translations.title')|trans} %}
+    {% trans_default_domain 'sfs_cms_admin' %}
 
     {% block title %}
-        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
-            <a class="btn btn-sm btn-outline-secondary float-end"  href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}">{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="bi bi-translate"></i></a>
+        {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS', section_entity) %}
+            <a class="btn btn-sm btn-outline-secondary float-end"  href="{{ url('sfs_cms_admin_sections_translations', {'section':section_entity.id}) }}">{{ ('admin_sections.read.translations.edit.link')|trans }} <i class="bi bi-translate"></i></a>
         {% else %}
-            <a class="btn btn-sm btn-outline-secondary float-end disabled">{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="bi bi-translate"></i></a>
+            <a class="btn btn-sm btn-outline-secondary float-end disabled">{{ ('admin_sections.read.translations.edit.link')|trans }} <i class="bi bi-translate"></i></a>
         {% endif %}
         {{ parent() }}
     {% endblock %}
 
     {% block content %}
-        {% set stats = entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
+        {% set stats = section_entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
 
         <p class="d-flex mb-2">
             {#<span class="pe-2">Default language</span>#}
-            {#<strong>{{ entity.defaultLocale }}</strong>#}
-            <span>{{ ('locale.'~entity.defaultLocale)|trans({}, 'sfs_cms_admin') }}</span>
+            {#<strong>{{ section_entity.defaultLocale }}</strong>#}
+            <span>{{ ('locale.'~section_entity.defaultLocale)|trans }}</span>
         </p>
 
         <div class="progress mb-2" role="progressbar" aria-label="Example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-bar bg-success" style="width: 100%">100%</div>
         </div>
 
-        {% for locale in content.locales | filter( (locale) => locale != content.defaultLocale) %}
+        {% for locale in section.locales | filter( (locale) => locale != section.defaultLocale) %}
             {% set localeStats = stats.locales[locale]|default({'percentage': 0}) %}
             <p class="d-flex mb-2">
                 <span>{{ ('locale.'~locale)|trans }}</span>

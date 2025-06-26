@@ -8,7 +8,9 @@ use Softspring\CmsBundle\Config\CmsConfig;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
+use Softspring\CmsBundle\Manager\SectionManagerInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
+use Softspring\CmsBundle\Model\VersionInterface;
 use Softspring\TranslatableBundle\Model\Translation;
 
 class TranslatorExtractor
@@ -16,6 +18,7 @@ class TranslatorExtractor
     public function __construct(
         protected CmsConfig $cmsConfig,
         protected ContentManagerInterface $contentManager,
+        protected SectionManagerInterface $sectionManager,
     ) {
     }
 
@@ -23,12 +26,12 @@ class TranslatorExtractor
      * @throws InvalidContentException
      * @throws ExtractException
      */
-    public function statistics(ContentVersionInterface $contentVersion): array
+    public function statistics(VersionInterface $version): array
     {
-        $translations = $this->extract($contentVersion);
+        $translations = $this->extract($version);
         $flatten = TranslationsTransformer::flatten($translations);
 
-        $defaultLocale = $contentVersion->getContent()->getDefaultLocale();
+        $defaultLocale = $version->getParent()->getDefaultLocale();
         $translationsByLocale = [];
         $total = 0;
         foreach ($flatten as $translation) {
@@ -68,19 +71,24 @@ class TranslatorExtractor
      * @throws ExtractException
      * @throws InvalidContentException
      */
-    public function extract(ContentVersionInterface $contentVersion): array
+    public function extract(VersionInterface $version): array
     {
         $translations = [];
 
-        $contentConfig = $this->cmsConfig->getContent($this->contentManager->getType($contentVersion->getContent()))['version_seo'];
-        $seo = $contentVersion->getSeo();
-        foreach ($contentConfig as $field => $fieldConfig) {
-            $translations['_seo'][$field] = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
-        }
+        if ($version instanceof ContentVersionInterface) {
+            $contentConfig = $this->cmsConfig->getContent($this->contentManager->getType($version->getContent()))['version_seo'];
+            $seo = $version->getSeo();
+            foreach ($contentConfig as $field => $fieldConfig) {
+                $translations['_seo'][$field] = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
+            }
 
-        $data = $contentVersion->getData();
-        foreach ($data ?? [] as $container => $modules) {
-            $translations[$container] = $this->extractContainer($modules);
+            $data = $version->getData();
+            foreach ($data ?? [] as $container => $modules) {
+                $translations[$container] = $this->extractContainer($modules);
+            }
+        } else {
+            $data = $version->getData() ?? [];
+            $translations['_section'] = $this->extractContainer($data);
         }
 
         return $translations;

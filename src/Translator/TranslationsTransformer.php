@@ -73,6 +73,10 @@ class TranslationsTransformer
             }
             $translationKeyParts = explode(':', $translationKey);
 
+            if ('_section' === $translationKeyParts[0]) {
+                array_shift($translationKeyParts);
+            }
+
             $current = &$data;
             foreach ($translationKeyParts as $part) {
                 if (!isset($current[$part])) {

@@ -1,0 +1,46 @@
+{% trans_default_domain 'sfs_cms_admin' %}
+
+{% extends '@SfsCms/admin_layout.html.twig' %}
+
+{% form_theme form
+    'bootstrap_5_layout.html.twig'
+    '@SfsCms/forms/routes_theme.html.twig'
+    '@SfsCms/forms/types_theme.html.twig' %}
+
+{% block title %}{{ ('admin_sections.translations_import.meta.title')|trans({'%name%':section_entity.name}) }}{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a
+                href="{{ url('sfs_cms_admin_sections_list') }}">{{ ('admin_sections.list.breadcrumb')|trans }}</a>
+    </li>
+    <li class="breadcrumb-item"><a
+                href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity.id}) }}">{{ ('admin_sections.read.breadcrumb')|trans({'%name%': section_entity.name}) }}</a>
+    </li>
+    <li class="breadcrumb-item active"
+        aria-current="section">{{ ('admin_sections.translations_import.breadcrumb')|trans({'%name%':section_entity.name}) }}</li>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    {% include '@SfsCms/admin/section/_section_title.html.twig'  with {'current':'translations', 'section_entity':section_entity, 'version_entity': prev_version|default(false)} %}
+    {% include '@SfsCms/admin/section/_section_tabs.html.twig'  with {'current':'translations', 'section_entity':section_entity} %}
+
+    <div class="container-fluid bg-white">
+        <div class="row">
+            <div class="col pb-3">
+                {{ form_start(form) }}
+
+                {{ form_errors(form) }}
+                {{ form_rest(form) }}
+
+                <div class="d-flex justify-section-end align-items-center">
+                    <a href="{{ url('sfs_cms_admin_sections_translations', {'section':section_entity.id}) }}"
+                       class="btn btn-outline-secondary">{{ ('admin_sections.translations_import.actions.cancel.button')|trans }}</a>
+                    <input type="submit" value="{{ ('admin_sections.translations_import.actions.import.button')|trans }}"
+                           class="btn btn-primary ms-3"/>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
