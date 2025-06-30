@@ -5,7 +5,7 @@ namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 use Exception;
 use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
 use Softspring\CmsBundle\Config\CmsConfig;
-use Softspring\CmsBundle\Config\Exception\InvalidSectionException;
+use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
 use Softspring\CmsBundle\Manager\SectionManagerInterface;
 use Softspring\CmsBundle\Manager\SectionVersionManagerInterface;
@@ -14,6 +14,7 @@ use Softspring\CmsBundle\Model\SectionVersionInterface;
 use Softspring\CmsBundle\Request\FlashNotifier;
 use Softspring\CmsBundle\Translator\TranslatableContext;
 use Softspring\CmsTranslationPlugin\Exchange\Exchanger;
+use Softspring\CmsTranslationPlugin\Exchange\ImportException;
 use Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin;
 use Softspring\CmsTranslationPlugin\Translator\ExtractException;
 use Softspring\CmsTranslationPlugin\Translator\TranslationsTransformer;
@@ -53,7 +54,7 @@ class ImportListener extends AbstractSectionVersionListener
     {
         return [
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_INITIALIZE => [
-                ['onEventLoadSectionEntity', 9],
+                ['onLoadSectionEntity', 9],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_ENTITY => [
                 ['onCreateEntity', 0],
@@ -74,6 +75,7 @@ class ImportListener extends AbstractSectionVersionListener
             ],
             // SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_INVALID => [],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_VIEW => [
+                ['onViewAddEntities', 0],
                 ['onView', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_EXCEPTION => [
@@ -109,8 +111,9 @@ class ImportListener extends AbstractSectionVersionListener
     }
 
     /**
-     * @throws InvalidSectionException
      * @throws ExtractException
+     * @throws InvalidContentException
+     * @throws ImportException
      */
     public function onApply(ApplyEvent $event): void
     {
@@ -152,16 +155,10 @@ class ImportListener extends AbstractSectionVersionListener
 
     public function onView(ViewEvent $event): void
     {
-        parent::onView($event);
-
         $request = $event->getRequest();
-        /** @var SectionInterface $section */
-        $section = $request->attributes->get('section');
         /** @var SectionVersionInterface $version */
         $version = $request->attributes->get('version');
 
-        $event->getData()['section_entity'] = $section;
-        $event->getData()['version_entity'] = $version;
         $event->getData()['prev_version'] = $version;
     }
 

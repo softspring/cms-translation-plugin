@@ -50,7 +50,7 @@ class ExportListener extends AbstractSectionVersionListener
     {
         return [
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_INITIALIZE => [
-                ['onEventLoadSectionEntity', 9],
+                ['onLoadSectionEntity', 9],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXPORT_ENTITY => [
                 ['onEntityLoadVersionEntity', 1],
