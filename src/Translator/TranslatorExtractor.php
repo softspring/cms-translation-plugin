@@ -9,7 +9,9 @@ use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
 use Softspring\CmsBundle\Manager\SectionManagerInterface;
+use Softspring\CmsBundle\Model\CompiledDataInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
+use Softspring\CmsBundle\Model\TranslatableConfigInterface;
 use Softspring\CmsBundle\Model\VersionInterface;
 use Softspring\TranslatableBundle\Model\Translation;
 
@@ -31,7 +33,10 @@ class TranslatorExtractor
         $translations = $this->extract($version);
         $flatten = TranslationsTransformer::flatten($translations);
 
-        $defaultLocale = $version->getParent()->getDefaultLocale();
+        /** @var TranslatableConfigInterface $parent */
+        $parent = $version->getParent();
+
+        $defaultLocale = $parent->getDefaultLocale();
         $translationsByLocale = [];
         $total = 0;
         foreach ($flatten as $translation) {
@@ -73,6 +78,10 @@ class TranslatorExtractor
      */
     public function extract(VersionInterface $version): array
     {
+        if (!$version instanceof CompiledDataInterface && !$version instanceof ContentVersionInterface) {
+            throw new ExtractException('Invalid version type');
+        }
+
         $translations = [];
 
         if ($version instanceof ContentVersionInterface) {

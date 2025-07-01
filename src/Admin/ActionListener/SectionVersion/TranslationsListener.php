@@ -42,7 +42,7 @@ class TranslationsListener extends AbstractSectionVersionListener
     {
         return [
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_INITIALIZE => [
-                ['onEventLoadSectionEntity', 9],
+                ['onLoadSectionEntity', 9],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_ENTITY => [
                 ['onTranslationsLoadEntity', 1],
@@ -65,7 +65,8 @@ class TranslationsListener extends AbstractSectionVersionListener
                 ['onFormInvalidShowAlert', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_VIEW => [
-                ['onView', 0],
+                ['onViewAddEntities', 10],
+                ['onViewAddWarnings', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXCEPTION => [
                 ['onException', 0],
@@ -198,18 +199,9 @@ class TranslationsListener extends AbstractSectionVersionListener
         $request->attributes->set('_section_version_alert', ['warning', 'admin_sections.version_translations.validation_error']);
     }
 
-    public function onView(ViewEvent $event): void
+    public function onViewAddWarnings(ViewEvent $event): void
     {
-        parent::onView($event);
-
         $request = $event->getRequest();
-        /** @var SectionInterface $section */
-        $section = $request->attributes->get('section');
-        /** @var SectionVersionInterface $version */
-        $version = $request->attributes->get('version');
-
-        $event->getData()['section_entity'] = $section;
-        $event->getData()['version_entity'] = $version;
 
         // add prev version
         $event->getData()['prev_version'] = $request->attributes->get('prevVersion');
