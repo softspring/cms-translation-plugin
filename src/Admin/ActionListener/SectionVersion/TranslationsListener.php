@@ -65,8 +65,8 @@ class TranslationsListener extends AbstractSectionVersionListener
                 ['onFormInvalidShowAlert', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_VIEW => [
-                ['onViewAddEntities', 10],
-                ['onViewAddWarnings', 0],
+                ['onViewAddEntities', 0],
+                ['onViewAddVariables', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_EXCEPTION => [
                 ['onException', 0],
@@ -199,7 +199,7 @@ class TranslationsListener extends AbstractSectionVersionListener
         $request->attributes->set('_section_version_alert', ['warning', 'admin_sections.version_translations.validation_error']);
     }
 
-    public function onViewAddWarnings(ViewEvent $event): void
+    public function onViewAddVariables(ViewEvent $event): void
     {
         $request = $event->getRequest();
 

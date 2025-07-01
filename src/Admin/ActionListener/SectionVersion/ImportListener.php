@@ -76,7 +76,7 @@ class ImportListener extends AbstractSectionVersionListener
             // SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_FORM_INVALID => [],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_VIEW => [
                 ['onViewAddEntities', 0],
-                ['onView', 0],
+                ['onViewAddPrevVersion', 0],
             ],
             SfsCmsTranslationPlugin::ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_EXCEPTION => [
                 ['onException', 0],
@@ -111,8 +111,8 @@ class ImportListener extends AbstractSectionVersionListener
     }
 
     /**
-     * @throws ExtractException
      * @throws InvalidContentException
+     * @throws ExtractException
      * @throws ImportException
      */
     public function onApply(ApplyEvent $event): void
@@ -153,7 +153,7 @@ class ImportListener extends AbstractSectionVersionListener
         $event->setApplied(true);
     }
 
-    public function onView(ViewEvent $event): void
+    public function onViewAddPrevVersion(ViewEvent $event): void
     {
         $request = $event->getRequest();
         /** @var SectionVersionInterface $version */

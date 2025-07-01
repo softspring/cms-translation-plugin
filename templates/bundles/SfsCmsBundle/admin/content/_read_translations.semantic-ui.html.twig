@@ -4,39 +4,51 @@
     {% trans_default_domain 'sfs_cms_contents' %}
 
     {% block title %}
+        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
+            <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}">
+                {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="language icon"></i>
+            </a>
+        {% else %}
+            <a class="ui mini basic disabled button right floated">
+                {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="language icon"></i>
+            </a>
+        {% endif %}
         {{ parent() }}
     {% endblock %}
 
     {% block content %}
-        <div class="ui list">
+        {% set stats = entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
+
+        <div class="ui horizontal list" style="margin-bottom: 1em;">
             <div class="item">
-                Default language
-                <div class="header">{{ entity.defaultLocale }}</div>
-            </div>
-            <div class="item">
-                Languages
-                <div class="header">{{ entity.locales|join(', ') }}</div>
+                <div class="content">
+                    <div class="header">{{ ('locale.'~entity.defaultLocale)|trans({}, 'sfs_cms_admin') }}</div>
+                </div>
             </div>
         </div>
-        <div class="ui divider"></div>
-        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
-            <a class="fluid ui primary labeled icon button" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}">
-                <i class="icon pencil"></i>{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}</a>
-        {% else %}
-            <a class="fluid ui primary labeled icon button disabled">
-                <i class="icon pencil"></i>{{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}</a>
-        {% endif %}
-{#        {% set stats = sfs_trans_stats(content, entity.site.languages) %}#}
-{#        {% for locale,localeStats in stats %}#}
-{#            <p class="d-flex">#}
-{#                <strong>{{ locale }}</strong>#}
-{#                <span class="col-10">#}
-{#                                                {% if localeStats.total %}#}
-{#                                                    {{ (localeStats.translated/localeStats.total*100)|round }}%#}
-{#                                                    <span class="text-tertiary">({{ localeStats.translated }}/{{ localeStats.total }})</span>#}
-{#                                                {% endif %}#}
-{#                                            </span>#}
-{#            </p>#}
-{#        {% endfor %}#}
+
+        <div class="ui progress success" data-percent="100" style="margin-bottom: 1em;">
+            <div class="bar" style="width: 100%;">
+                <div class="progress">100%</div>
+            </div>
+        </div>
+
+        {% for locale in content.locales | filter( (locale) => locale != content.defaultLocale) %}
+            {% set localeStats = stats.locales[locale]|default({'percentage': 0}) %}
+            <div class="ui horizontal list" style="margin-bottom: 1em;">
+                <div class="item">
+                    <div class="content">
+                        <div class="header">{{ ('locale.'~locale)|trans({}, 'sfs_cms_admin') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {% set color = localeStats.percentage < 25 ? 'red' : (localeStats.percentage < 95 ? 'yellow' : 'green') %}
+            <div class="ui progress {{ color }}" data-percent="{{ localeStats.percentage|round }}" style="margin-bottom: 1em;">
+                <div class="bar" style="width: {{ localeStats.percentage|round }}%;">
+                    <div class="progress">{{ localeStats.percentage|round }}%</div>
+                </div>
+            </div>
+        {% endfor %}
     {% endblock %}
 {% endembed %}
