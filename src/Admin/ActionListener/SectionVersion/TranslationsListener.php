@@ -202,10 +202,6 @@ class TranslationsListener extends AbstractSectionVersionListener
     public function onViewAddVariables(ViewEvent $event): void
     {
         $request = $event->getRequest();
-        /** @var SectionInterface $section */
-        $section = $request->attributes->get('section');
-        /** @var SectionVersionInterface $version */
-        $version = $request->attributes->get('version');
 
         // add prev version
         $event->getData()['prev_version'] = $request->attributes->get('prevVersion');

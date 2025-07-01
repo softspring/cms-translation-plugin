@@ -156,8 +156,6 @@ class ImportListener extends AbstractSectionVersionListener
     public function onViewAddPrevVersion(ViewEvent $event): void
     {
         $request = $event->getRequest();
-        /** @var SectionInterface $section */
-        $section = $request->attributes->get('section');
         /** @var SectionVersionInterface $version */
         $version = $request->attributes->get('version');
 
