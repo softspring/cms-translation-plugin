@@ -6,11 +6,13 @@
     {% block title %}
         {% if is_granted('PERMISSION_SFS_CMS_ADMIN_CONTENT_TRANSLATIONS', section_entity) %}
             <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_sections_translations', {'section':section_entity.id}) }}">
-                {{ ('admin_sections.read.translations.edit.link')|trans }} <i class="language icon"></i>
+                <i class="language icon"></i>
+                {{ ('admin_sections.read.translations.edit.link')|trans }}
             </a>
         {% else %}
             <a class="ui mini basic disabled button right floated">
-                {{ ('admin_sections.read.translations.edit.link')|trans }} <i class="language icon"></i>
+                <i class="language icon"></i>
+                {{ ('admin_sections.read.translations.edit.link')|trans }}
             </a>
         {% endif %}
         {{ parent() }}
