@@ -3,7 +3,7 @@
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
 use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
-use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
 use Softspring\CmsBundle\Manager\SectionManagerInterface;
 use Softspring\CmsBundle\Manager\SectionVersionManagerInterface;
@@ -33,9 +33,9 @@ class TranslationsListener extends AbstractSectionVersionListener
 {
     protected const ACTION_NAME = 'version_translations';
 
-    public function __construct(SectionManagerInterface $sectionManager, SectionVersionManagerInterface $sectionVersionManager, RouteManagerInterface $routeManager, CmsConfig $cmsConfig, RouterInterface $router, FlashNotifier $flashNotifier, AuthorizationCheckerInterface $authorizationChecker, protected TranslatorExtractor $translatorExtractor, protected TranslatableContext $translatableContext)
+    public function __construct(SectionManagerInterface $sectionManager, SectionVersionManagerInterface $sectionVersionManager, RouteManagerInterface $routeManager, CmsHelper $cmsHelper, RouterInterface $router, FlashNotifier $flashNotifier, AuthorizationCheckerInterface $authorizationChecker, protected TranslatorExtractor $translatorExtractor, protected TranslatableContext $translatableContext)
     {
-        parent::__construct($sectionManager, $sectionVersionManager, $routeManager, $cmsConfig, $router, $flashNotifier, $authorizationChecker);
+        parent::__construct($sectionManager, $sectionVersionManager, $routeManager, $cmsHelper, $router, $flashNotifier, $authorizationChecker);
     }
 
     public static function getSubscribedEvents(): array

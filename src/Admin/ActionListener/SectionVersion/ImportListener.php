@@ -4,7 +4,7 @@ namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
 use Exception;
 use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
-use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
 use Softspring\CmsBundle\Manager\SectionManagerInterface;
@@ -39,7 +39,7 @@ class ImportListener extends AbstractSectionVersionListener
         SectionManagerInterface $sectionManager,
         SectionVersionManagerInterface $sectionVersionManager,
         RouteManagerInterface $routeManager,
-        CmsConfig $cmsConfig,
+        CmsHelper $cmsHelper,
         RouterInterface $router,
         FlashNotifier $flashNotifier,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -47,7 +47,7 @@ class ImportListener extends AbstractSectionVersionListener
         protected TranslatableContext $translatableContext,
         protected Exchanger $exchanger,
     ) {
-        parent::__construct($sectionManager, $sectionVersionManager, $routeManager, $cmsConfig, $router, $flashNotifier, $authorizationChecker);
+        parent::__construct($sectionManager, $sectionVersionManager, $routeManager, $cmsHelper, $router, $flashNotifier, $authorizationChecker);
     }
 
     public static function getSubscribedEvents(): array
