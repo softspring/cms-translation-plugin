@@ -5,6 +5,7 @@ namespace Softspring\CmsTranslationPlugin\Translator;
 use Exception;
 use ReflectionClass;
 use Softspring\CmsBundle\Config\CmsConfig;
+use Softspring\CmsBundle\Config\Exception\DisabledModuleException;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
@@ -112,7 +113,13 @@ class TranslatorExtractor
         $translations = [];
 
         foreach ($modules as $module => $fields) {
-            $translations[$module] = $this->extractModule($fields);
+            try {
+                $translations[$module] = $this->extractModule($fields);
+            } catch (Exception $e) {
+                if ($e instanceof DisabledModuleException || $e->getPrevious() instanceof DisabledModuleException) {
+                    continue; // Skip disabled modules
+                }
+            }
         }
 
         return $translations;
@@ -147,7 +154,7 @@ class TranslatorExtractor
             }
 
             return array_filter($translations);
-        } catch (Exception $e) {
+        } catch (DisabledModuleException $e) {
             throw new ExtractException('Error extracting translations', 0, $e);
         }
     }
