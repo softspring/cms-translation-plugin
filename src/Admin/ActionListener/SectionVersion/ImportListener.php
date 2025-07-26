@@ -4,8 +4,8 @@ namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
 use Exception;
 use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
-use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
+use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
 use Softspring\CmsBundle\Manager\SectionManagerInterface;
 use Softspring\CmsBundle\Manager\SectionVersionManagerInterface;
