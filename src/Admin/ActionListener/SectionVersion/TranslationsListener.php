@@ -2,16 +2,16 @@
 
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
-use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
 use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
-use Softspring\CmsBundle\Manager\SectionManagerInterface;
-use Softspring\CmsBundle\Manager\SectionVersionManagerInterface;
-use Softspring\CmsBundle\Model\SectionInterface;
-use Softspring\CmsBundle\Model\SectionVersionInterface;
 use Softspring\CmsBundle\Render\RenderErrorException;
 use Softspring\CmsBundle\Request\FlashNotifier;
 use Softspring\CmsBundle\Translator\TranslatableContext;
+use Softspring\CmsSectionsPlugin\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;
+use Softspring\CmsSectionsPlugin\Manager\SectionManagerInterface;
+use Softspring\CmsSectionsPlugin\Manager\SectionVersionManagerInterface;
+use Softspring\CmsSectionsPlugin\Model\SectionInterface;
+use Softspring\CmsSectionsPlugin\Model\SectionVersionInterface;
 use Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin;
 use Softspring\CmsTranslationPlugin\Translator\ExtractException;
 use Softspring\CmsTranslationPlugin\Translator\InvalidTranslationMappingException;

@@ -25,8 +25,8 @@
 {% endblock breadcrums_content %}
 
 {% block content %}
-    {% include '@SfsCms/admin/section/_section_title.html.twig'  with {'current':'translations', 'section_entity':section_entity, 'version_entity': prev_version|default(false)} %}
-    {% include '@SfsCms/admin/section/_section_tabs.html.twig'  with {'current':'translations', 'section_entity':section_entity} %}
+    {% include '@SfsCmsSectionsPlugin/admin/section/_section_title.html.twig'  with {'current':'translations', 'section_entity':section_entity, 'version_entity': prev_version|default(false)} %}
+    {% include '@SfsCmsSectionsPlugin/admin/section/_section_tabs.html.twig'  with {'current':'translations', 'section_entity':section_entity} %}
 
     <div class="container-fluid mb-3">
         <div class="row">

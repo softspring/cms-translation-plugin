@@ -8,13 +8,11 @@ services:
         resource: '../../src/Form/Admin/*'
 
     Softspring\CmsTranslationPlugin\Admin\Menu\ContentMenuProvider:
-        tags: [ 'sfs_cms.admin_menu.content_menu_provider' ]
+        tags: [ 'sfs_cms.admin_menu.menu_provider' ]
 
-    Softspring\CmsTranslationPlugin\Admin\Menu\SectionMenuProvider:
-        tags: [ 'sfs_cms.admin_menu.section_menu_provider' ]
-
-    Softspring\CmsTranslationPlugin\Admin\Routing\AdminRoutingProvider:
-        tags: [ 'sfs_cms.admin_routing_provider' ]
+    Softspring\CmsTranslationPlugin\Admin\Routing\:
+        resource: '../../src/Admin/Routing/*'
+        tags: [ 'sfs_cms.routing_provider' ]
 
     Softspring\CmsTranslationPlugin\Translator\TranslatorExtractor: ~
 
@@ -28,9 +26,4 @@ services:
         class: Softspring\CmsTranslationPlugin\EntityListener\VersionTranslationStatisticsListener
         tags:
             - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'Softspring\CmsBundle\Entity\ContentVersion',  priority: 15 } #, entity_manager: '%sfs_cms.entity_manager_name%' }
-
-    sfs_cms_translation_plugin.section_version.statistics_listener:
-        class: Softspring\CmsTranslationPlugin\EntityListener\VersionTranslationStatisticsListener
-        tags:
-            - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'Softspring\CmsBundle\Entity\SectionVersion',  priority: 15 } #, entity_manager: '%sfs_cms.entity_manager_name%' }
 

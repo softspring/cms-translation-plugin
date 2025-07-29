@@ -75,6 +75,11 @@ class SfsCmsTranslationPlugin extends SfsCmsPlugin
     public const ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_VIEW = 'sfs_cms_translation_plugin.admin.section_versions.import_view';
     public const ADMIN_SECTION_VERSIONS_TRANSLATIONS_IMPORT_EXCEPTION = 'sfs_cms_translation_plugin.admin.section_versions.import_exception';
 
+    public static function getAlias(): string
+    {
+        return 'sfs_cms_translation';
+    }
+
     public function getPath(): string
     {
         return \dirname(__DIR__);

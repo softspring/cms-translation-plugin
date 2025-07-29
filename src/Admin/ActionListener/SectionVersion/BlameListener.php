@@ -2,7 +2,7 @@
 
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
-use Softspring\CmsBundle\Admin\ActionListener\SectionVersion\BlameListener as BaseBlameListener;
+use Softspring\CmsSectionsPlugin\Admin\ActionListener\SectionVersion\BlameListener as BaseBlameListener;
 use Softspring\CmsTranslationPlugin\SfsCmsTranslationPlugin;
 
 class BlameListener extends BaseBlameListener
