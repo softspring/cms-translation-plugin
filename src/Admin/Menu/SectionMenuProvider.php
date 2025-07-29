@@ -3,8 +3,9 @@
 namespace Softspring\CmsTranslationPlugin\Admin\Menu;
 
 use RuntimeException;
-use Softspring\CmsBundle\Admin\Menu\AbstractSectionMenuProvider;
 use Softspring\CmsBundle\Admin\Menu\MenuHelper;
+use Softspring\CmsSectionsPlugin\Admin\Menu\AbstractSectionMenuProvider;
+use Softspring\CmsSectionsPlugin\Model\SectionInterface;
 
 class SectionMenuProvider extends AbstractSectionMenuProvider
 {
@@ -16,9 +17,10 @@ class SectionMenuProvider extends AbstractSectionMenuProvider
     /**
      * @throws RuntimeException
      */
-    public function getMenu(array $menu, ?string $currentSelection = null, array $context = []): array
+    public function getMenu(array $menu, ?string $currentSelection = null, ?object $entity = null): array
     {
-        $section = $context['section'] ?? null;
+        /** @var SectionInterface $section */
+        $section = $entity;
 
         if (1 == sizeof($section->getLocales())) {
             return $menu;

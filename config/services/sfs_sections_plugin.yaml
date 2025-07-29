@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Softspring\CmsTranslationPlugin\Admin\Menu\SectionMenuProvider:
+        tags: [ 'sfs_cms.admin_menu.menu_provider' ]
+
+    sfs_cms_translation_plugin.section_version.statistics_listener:
+        class: Softspring\CmsTranslationPlugin\EntityListener\VersionTranslationStatisticsListener
+        tags:
+            - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'Softspring\CmsSectionsPlugin\Entity\SectionVersion',  priority: 15 } #, entity_manager: '%sfs_cms.entity_manager_name%' }

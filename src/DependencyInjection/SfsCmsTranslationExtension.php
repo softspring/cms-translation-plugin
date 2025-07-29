@@ -20,6 +20,13 @@ class SfsCmsTranslationExtension extends Extension // implements PrependExtensio
         // load services
         $loader->load('services.yaml');
         $loader->load('controller/admin_content_version.yaml');
-        $loader->load('controller/admin_section_version.yaml');
+
+        $registeredPlugins = $container->hasParameter('sfs_cms.registered_plugins') ? $container->getParameter('sfs_cms.registered_plugins') : [];
+        foreach ($registeredPlugins as $plugin) {
+            if ('sfs_cms_sections' === $plugin['alias']) {
+                $loader->load('sfs_sections_plugin.yaml');
+                $loader->load('controller/admin_section_version.yaml');
+            }
+        }
     }
 }

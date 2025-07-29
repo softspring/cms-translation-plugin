@@ -9,7 +9,6 @@ use Softspring\CmsBundle\Config\Exception\DisabledModuleException;
 use Softspring\CmsBundle\Config\Exception\InvalidContentException;
 use Softspring\CmsBundle\Form\Module\ContainerModuleType;
 use Softspring\CmsBundle\Manager\ContentManagerInterface;
-use Softspring\CmsBundle\Manager\SectionManagerInterface;
 use Softspring\CmsBundle\Model\ContentDataInterface;
 use Softspring\CmsBundle\Model\ContentVersionInterface;
 use Softspring\CmsBundle\Model\TranslatableConfigInterface;
@@ -22,7 +21,6 @@ class TranslatorExtractor
     public function __construct(
         protected CmsConfig $cmsConfig,
         protected ContentManagerInterface $contentManager,
-        protected SectionManagerInterface $sectionManager,
     ) {
     }
 

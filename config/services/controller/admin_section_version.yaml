@@ -1,6 +1,6 @@
 parameters:
-    sfs_cms.admin.sections.translations_view: '@@SfsCms/admin/section/version_translations.html.twig'
-    sfs_cms.admin.sections.translations_import_view: '@@SfsCms/admin/section/version_translations_import.html.twig'
+    sfs_cms.admin.sections.translations_view: '@@SfsCmsSectionsPlugin/admin/section/version_translations.html.twig'
+    sfs_cms.admin.sections.translations_import_view: '@@SfsCmsSectionsPlugin/admin/section/version_translations_import.html.twig'
 
 services:
     _defaults:
@@ -15,7 +15,7 @@ services:
         class: Softspring\Component\CrudlController\Controller\CrudlController
         public: true
         arguments:
-            $manager: '@Softspring\CmsBundle\Manager\SectionVersionManagerInterface'
+            $manager: '@Softspring\CmsSectionsPlugin\Manager\SectionVersionManagerInterface'
             $configs:
                 entity_attribute: 'version'
                 version_translations:
