@@ -6,11 +6,11 @@
     {% block title %}
         {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
             <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}">
-                {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="language icon"></i>
+                <i class="language icon"></i> {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}
             </a>
         {% else %}
             <a class="ui mini basic disabled button right floated">
-                {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }} <i class="language icon"></i>
+                <i class="language icon"></i> {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}
             </a>
         {% endif %}
         {{ parent() }}
