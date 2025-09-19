@@ -28,7 +28,7 @@
         {% for locale in content.locales | filter( (locale) => locale != content.defaultLocale) %}
             {% set localeStats = stats.locales[locale]|default({'percentage': 0}) %}
             <p class="d-flex mb-2">
-                <span>{{ ('locale.'~locale)|trans }}</span>
+                <span>{{ ('locale.'~locale)|trans({}, 'sfs_cms_admin') }}</span>
             </p>
 
             <div class="progress mb-2" role="progressbar" aria-label="Example with label" aria-valuenow="{{ localeStats.percentage|round }}" aria-valuemin="0" aria-valuemax="100">
