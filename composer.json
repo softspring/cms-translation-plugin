@@ -8,7 +8,7 @@
     "require": {
         "php": ">=8.1",
         "ext-dom": "*",
-        "softspring/cms-bundle": "^5.5@dev"
+        "softspring/cms-bundle": "^5.5"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.68",
@@ -16,7 +16,7 @@
         "phpunit/phpunit": "^10.5",
         "rector/rector": "^1.0",
         "symfony/translation": "^5.4|^6.0|^7.0",
-        "softspring/cms-sections-plugin": "^5.5@dev"
+        "softspring/cms-sections-plugin": "^5.5"
     },
     "autoload": {
         "psr-4": {
