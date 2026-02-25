@@ -23,7 +23,7 @@ jobs:
                 composer-prefer: [ '', '--prefer-lowest' ]
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v6
 
             -   name: Install PHP
                 uses: shivammathur/setup-php@v2
@@ -77,7 +77,7 @@ jobs:
                 node-versions: [ '18' ]
                 npm-versions: [ '10' ]
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
 
             -   name: Install Node.js
                 uses: actions/setup-node@v2
