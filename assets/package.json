@@ -1,7 +1,7 @@
 {
     "name": "@softspring/cms-translation-plugin",
     "license": "MIT",
-    "version": "5.4.0-dev",
+    "version": "6.0.0-dev",
     "peerDependencies": {
         "@softspring/cms-bundle": "*",
         "@softspring/translatable-bundle": "*"
