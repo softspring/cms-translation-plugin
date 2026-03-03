@@ -22,7 +22,7 @@ class ContentMenuProvider extends AbstractContentMenuProvider
     {
         [$content, $contentType, $contentConfig] = $this->getContent(['content' => $entity]);
 
-        if (1 == sizeof($content->getLocales())) {
+        if (1 === count($content->getLocales())) {
             return $menu;
         }
 

@@ -86,13 +86,14 @@ class ImportListener extends AbstractSectionVersionListener
 
     public function onCreateEntity(CreateEntityEvent $event): void
     {
-        $versionId = $event->getRequest()->get('version');
+        $request = $event->getRequest();
+        $versionId = $request->attributes->get('version', $request->query->get('version', $request->request->get('version')));
 
         /** @var SectionInterface $section */
-        $section = $event->getRequest()->attributes->get('section');
+        $section = $request->attributes->get('section');
 
-        $version = $section->getVersions()->filter(fn (SectionVersionInterface $versionI) => $versionI->getId() === $versionId)->first();
-        $event->getRequest()->attributes->set('version', $version);
+        $version = $section->getVersions()->filter(fn (SectionVersionInterface $versionI): bool => $versionI->getId() === $versionId)->first();
+        $request->attributes->set('version', $version);
 
         // no entity is required for form
         $event->setEntity([]);

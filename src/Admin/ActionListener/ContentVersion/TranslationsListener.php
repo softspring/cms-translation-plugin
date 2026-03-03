@@ -119,7 +119,7 @@ class TranslationsListener extends AbstractContentVersionListener
         /** @var ContentVersionInterface $version */
         $version = $event->getEntity();
 
-        $contentConfig = $event->getRequest()->attributes->get('_content_config');
+        $event->getRequest()->attributes->get('_content_config');
 
         $this->translatableContext->setDefaultLocale($version->getContent()->getDefaultLocale());
         $this->translatableContext->setLocales($version->getContent()->getLocales());
@@ -269,9 +269,6 @@ class TranslationsListener extends AbstractContentVersionListener
         }
 
         if ($event->getException() instanceof ExtractException) {
-            // TODO manage this
-
-            return;
         }
     }
 }

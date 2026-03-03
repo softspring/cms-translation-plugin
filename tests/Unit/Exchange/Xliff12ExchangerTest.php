@@ -212,7 +212,7 @@ TEST1,
 
         $resultCollection = $exchanger->importFile($file, $originalFlattenTranslations);
 
-        $this->assertEquals(1, sizeof($resultCollection->getResults()));
+        $this->assertEquals(1, count($resultCollection->getResults()));
         $result = $resultCollection->getResults()[0];
 
         // assert identifications

@@ -129,7 +129,9 @@ class ExportListener extends AbstractContentVersionListener
 
         if ('all' === $targetLocale) {
             $filePath = sys_get_temp_dir()."/{$exportOptions['exportFileNameBase']}.zip";
-            file_exists($filePath) && unlink($filePath);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
             $file = new File($filePath, false);
             $zipFile = new ZipArchive();
             $zipFile->open($file->getPathname(), ZipArchive::CREATE);
@@ -158,7 +160,7 @@ class ExportListener extends AbstractContentVersionListener
 
     public function onFailure(FailureEvent $event): void
     {
-        $contentConfig = $event->getRequest()->attributes->get('_content_config');
+        $event->getRequest()->attributes->get('_content_config');
 
         $this->flashNotifier->add('error', $event->getException()->getMessage());
 
@@ -168,7 +170,7 @@ class ExportListener extends AbstractContentVersionListener
 
     public function onException(ExceptionEvent $event): void
     {
-        $contentConfig = $event->getRequest()->attributes->get('_content_config');
+        $event->getRequest()->attributes->get('_content_config');
 
         $this->flashNotifier->add('error', $event->getException()->getMessage());
 

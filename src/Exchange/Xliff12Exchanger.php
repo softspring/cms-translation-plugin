@@ -218,9 +218,15 @@ class Xliff12Exchanger implements ExchangerInterface
 
             if ($options['ref'] ?? false) {
                 $reference = $xliffHead->appendChild($dom->createElement('reference'));
-                isset($options['ref']['class']) && $reference->setAttribute('class', $options['ref']['class']);
-                isset($options['ref']['id']) && $reference->setAttribute('id', $options['ref']['id']);
-                isset($options['ref']['version']) && $reference->setAttribute('version', $options['ref']['version']);
+                if (isset($options['ref']['class'])) {
+                    $reference->setAttribute('class', $options['ref']['class']);
+                }
+                if (isset($options['ref']['id'])) {
+                    $reference->setAttribute('id', $options['ref']['id']);
+                }
+                if (isset($options['ref']['version'])) {
+                    $reference->setAttribute('version', $options['ref']['version']);
+                }
             }
 
             $xliffBody = $xliffFile->appendChild($dom->createElement('body'));

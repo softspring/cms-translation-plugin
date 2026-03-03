@@ -14,7 +14,7 @@ class SfsCmsTranslationExtension extends Extension // implements PrependExtensio
     {
         $processor = new Processor();
         $configuration = new Configuration();
-        $config = $processor->processConfiguration($configuration, $configs);
+        $processor->processConfiguration($configuration, $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config/services'));
 
         // load services

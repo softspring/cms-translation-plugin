@@ -100,13 +100,14 @@ class ImportListener extends AbstractContentVersionListener
 
     public function onCreateEntity(CreateEntityEvent $event): void
     {
-        $versionId = $event->getRequest()->get('version');
+        $request = $event->getRequest();
+        $versionId = $request->attributes->get('version', $request->query->get('version', $request->request->get('version')));
 
         /** @var ContentInterface $content */
-        $content = $event->getRequest()->attributes->get('content');
+        $content = $request->attributes->get('content');
 
         $version = $this->contentVersionManager->getRepository()->findOneBy(['content' => $content, 'id' => $versionId]);
-        $event->getRequest()->attributes->set('version', $version);
+        $request->attributes->set('version', $version);
 
         // no entity is required for form
         $event->setEntity([]);

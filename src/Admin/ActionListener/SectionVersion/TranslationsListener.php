@@ -83,7 +83,7 @@ class TranslationsListener extends AbstractSectionVersionListener
         $prevVersion = $request->query->get('version');
 
         if ($prevVersion) {
-            $prevVersion = $section->getVersions()->filter(fn (SectionVersionInterface $version) => $version->getId() == $prevVersion)->first();
+            $prevVersion = $section->getVersions()->filter(fn (SectionVersionInterface $version): bool => $version->getId() == $prevVersion)->first();
         }
 
         $request->attributes->set('prevVersion', $prevVersion ?: $section->getLastVersion());
@@ -229,9 +229,6 @@ class TranslationsListener extends AbstractSectionVersionListener
         }
 
         if ($event->getException() instanceof ExtractException) {
-            // TODO manage this
-
-            return;
         }
     }
 }

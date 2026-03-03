@@ -22,7 +22,7 @@ class SectionMenuProvider extends AbstractSectionMenuProvider
         /** @var SectionInterface $section */
         $section = $entity;
 
-        if (1 == sizeof($section->getLocales())) {
+        if (1 == count($section->getLocales())) {
             return $menu;
         }
 

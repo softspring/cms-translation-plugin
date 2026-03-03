@@ -81,7 +81,7 @@ class ExportListener extends AbstractSectionVersionListener
         $version = $request->query->get('version');
 
         if ($version) {
-            $version = $section->getVersions()->filter(fn (SectionVersionInterface $versionItem) => $versionItem->getId() == $version)->first();
+            $version = $section->getVersions()->filter(fn (SectionVersionInterface $versionItem): bool => $versionItem->getId() == $version)->first();
         }
 
         if (!$version) {
@@ -116,7 +116,9 @@ class ExportListener extends AbstractSectionVersionListener
 
         if ('all' === $targetLocale) {
             $filePath = sys_get_temp_dir()."/{$exportOptions['exportFileNameBase']}.zip";
-            file_exists($filePath) && unlink($filePath);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
             $file = new File($filePath, false);
             $zipFile = new ZipArchive();
             $zipFile->open($file->getPathname(), ZipArchive::CREATE);

@@ -33,7 +33,7 @@ class TranslatorExtractor
         $translations = $this->extract($version);
         $flatten = TranslationsTransformer::flatten($translations);
 
-        /** @var VersionableInterface|TranslatableConfigInterface $parent */
+        /** @var VersionableInterface&TranslatableConfigInterface $parent */
         $parent = $version->getParent();
 
         $defaultLocale = $parent->getDefaultLocale();
@@ -45,7 +45,7 @@ class TranslatorExtractor
                     continue;
                 }
                 ++$total;
-                foreach ($translation->getTranslations() as $locale => $value) {
+                foreach (array_keys($translation->getTranslations()) as $locale) {
                     if (!isset($translationsByLocale[$locale])) {
                         $translationsByLocale[$locale] = 0;
                     }
