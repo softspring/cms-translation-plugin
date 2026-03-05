@@ -15,13 +15,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('api')
-                    ->setDeprecated('softspring/cms-translation-plugin', '5.4', 'The "%node%" configuration key is deprecated and will be removed in 6.0. Use "sfs_translatable.api" instead.')
-                    ->canBeEnabled()
-                    ->children()
-                        ->enumNode('driver')->values(['google'])->defaultValue('google')->end()
-                    ->end()
-                ->end()
             ->end()
         ;
 
