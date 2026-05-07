@@ -2,13 +2,15 @@
 
 namespace Softspring\CmsTranslationPlugin\DependencyInjection;
 
+use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class SfsCmsTranslationExtension extends Extension // implements PrependExtensionInterface
+class SfsCmsTranslationExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -27,6 +29,22 @@ class SfsCmsTranslationExtension extends Extension // implements PrependExtensio
                 $loader->load('sfs_sections_plugin.yaml');
                 $loader->load('controller/admin_section_version.yaml');
             }
+        }
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $assetsPath = \dirname(__DIR__, 2).'/assets';
+        $assetsDistPath = $assetsPath.'/dist';
+
+        if (interface_exists(AssetMapperInterface::class)) {
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        $assetsDistPath => '@softspring/cms-translation-plugin',
+                    ],
+                ],
+            ]);
         }
     }
 }
