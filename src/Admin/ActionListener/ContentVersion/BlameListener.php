@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\ContentVersion;
 
 use Softspring\CmsBundle\Admin\ActionListener\ContentVersion\BlameListener as BaseBlameListener;

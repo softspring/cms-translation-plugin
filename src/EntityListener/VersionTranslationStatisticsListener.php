@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Softspring\CmsTranslationPlugin\EntityListener;
 
 use Doctrine\ORM\Event\PrePersistEventArgs;

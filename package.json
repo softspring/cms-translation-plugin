@@ -24,6 +24,7 @@
         }
     },
     "scripts": {
-        "build": "node assets/build-dist.mjs"
+        "build": "node assets/build-dist.mjs",
+        "lint": "ESLINT_USE_FLAT_CONFIG=true eslint --config assets/eslint.config.mjs assets/scripts"
     }
 }

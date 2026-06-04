@@ -20,4 +20,6 @@ parameters:
         -
             message: '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::arrayNode\(\)#'
             reportUnmatched: false
-        - '#Call to an undefined method .*DOMNode.*::setAttribute\(\)#'
+        -
+            message: '#Call to an undefined method .*DOMNode.*::setAttribute\(\)#'
+            reportUnmatched: false
