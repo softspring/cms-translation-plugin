@@ -88,7 +88,10 @@ class TranslatorExtractor
             $contentConfig = $this->cmsConfig->getContent($this->contentManager->getType($version->getContent()))['version_seo'];
             $seo = $version->getSeo();
             foreach ($contentConfig as $field => $fieldConfig) {
-                $translations['_seo'][$field] = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
+                $extractedTranslations = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
+                if (null !== $extractedTranslations) {
+                    $translations['_seo'][$field] = $extractedTranslations;
+                }
             }
 
             $data = $version->getData();
@@ -147,7 +150,10 @@ class TranslatorExtractor
                     if (null === $fieldConfig) {
                         continue;
                     }
-                    $translations[$field] = $this->extractFieldTranslations($fieldConfig, $moduleData[$field] ?? null);
+                    $extractedTranslations = $this->extractFieldTranslations($fieldConfig, $moduleData[$field] ?? null);
+                    if (null !== $extractedTranslations) {
+                        $translations[$field] = $extractedTranslations;
+                    }
                 }
             }
 
@@ -159,6 +165,10 @@ class TranslatorExtractor
 
     protected function extractFieldTranslations(array $fieldConfig, mixed $fieldValue): ?Translation
     {
+        if (false === ($fieldConfig['type_options']['extractable'] ?? true)) {
+            return null;
+        }
+
         if ('translation' !== $fieldConfig['type']) {
             return null;
         }
