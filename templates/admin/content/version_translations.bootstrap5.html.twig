@@ -16,23 +16,23 @@
                 href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}">{{ ('admin_'~content_type~'.list.breadcrumb')|trans }}</a>
     </li>
     <li class="breadcrumb-item"><a
-                href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': entity.name}) }}</a>
+                href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':content_entity}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': content_entity.name}) }}</a>
     </li>
     <li class="breadcrumb-item active"
         aria-current="content">{{ ('admin_'~content_type~'.translations.breadcrumb')|trans({'%name%':content_entity.name}) }}</li>
 {% endblock breadcrums_content %}
 
 {% block content %}
-    {% include ['@content/'~content_type~'/admin/_content_title.html.twig', '@SfsCms/admin/content/_content_title.html.twig']  with {'current':'translations', 'content_type':content_type, 'content_entity':entity, 'version_entity': prev_version|default(false)} %}
-    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'entity':version_entity} %}
+    {% include ['@content/'~content_type~'/admin/_content_title.html.twig', '@SfsCms/admin/content/_content_title.html.twig']  with {'current':'translations', 'content_type':content_type, 'content_entity':content_entity, 'version_entity': prev_version|default(false)} %}
+    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'version_entity': version_entity} %}
 
     <div class="container-fluid mb-3">
         <div class="row">
             <div class="col">
                 <div class="float-end">
-                    {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, entity) %}
+                    {% if not content_config.admin.version_translations_import.is_granted or is_granted(content_config.admin.version_translations_import.is_granted, content_entity) %}
                         <a class="btn btn-outline-secondary"
-                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':entity.id, 'back':'translations', 'version':prev_version.id}) }}">
+                           href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_import', {'content':content_entity.id, 'back':'translations', 'version':prev_version.id}) }}">
                             <i class="bi bi-upload"></i>
                             {{ ('admin_'~content_type~'.translations.actions.import_translations.link')|trans }}
                         </a>
@@ -43,7 +43,7 @@
                         </a>
                     {% endif %}
 
-                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
+                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, content_entity) %}
                         {% if content_config.admin.version_translations_export.formats|length > 1 %}
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" title="Export"
@@ -54,7 +54,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     {% for format in content_config.admin.version_translations_export.formats %}
                                         <li><a class="dropdown-item"
-                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':content_entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -62,7 +62,7 @@
                         {% else %}
                             {% set format = content_config.admin.version_translations_export.formats|first %}
                             <a class="btn btn-outline-secondary"
-                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}"
+                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export_all', {'content':content_entity.id, 'back':'translations', 'version':prev_version.id, 'format': format}) }}"
                                title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
                                 <i class="bi bi-download"></i>
                                 {{ ('admin_'~content_type~'.translations.actions.export_translations.link')|trans }}
@@ -149,7 +149,7 @@
                                         </span>
                                     {% endif %}
 
-                                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, entity) %}
+                                    {% if not content_config.admin.version_translations_export.is_granted or is_granted(content_config.admin.version_translations_export.is_granted, content_entity) %}
                                         {% if content_config.admin.version_translations_export.formats|length > 1 %}
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-link dropdown-toggle"
@@ -160,7 +160,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     {% for format in content_config.admin.version_translations_export.formats %}
                                                         <li><a class="dropdown-item"
-                                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
+                                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':content_entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}">{{ ('admin_page.translations.export.formats.'~format)|trans }}</a>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -168,7 +168,7 @@
                                         {% else %}
                                             {% set format = content_config.admin.version_translations_export.formats|first %}
                                             <a class="btn btn-link float-end p-0"
-                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}"
+                                               href="{{ url('sfs_cms_admin_content_'~content_type~'_translations_export', {'content':content_entity.id, 'back':'translations', 'version':prev_version.id, 'target':locale, 'format': format}) }}"
                                                title="{{ ('admin_page.translations.export.formats.'~format)|trans }}">
                                                 <i class="bi bi-download"></i>
                                             </a>
@@ -227,7 +227,7 @@
                 {{ form_rest(form) }}
 
                 <div class="d-flex justify-content-end align-items-center">
-                    <a href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity.id}) }}"
+                    <a href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':content_entity.id}) }}"
                        class="btn btn-outline-secondary">{{ ('admin_'~content_type~'.translations.actions.cancel.button')|trans }}</a>
                     <input type="submit" value="{{ ('admin_'~content_type~'.translations.actions.save.button')|trans }}"
                            class="btn btn-primary ms-3"/>

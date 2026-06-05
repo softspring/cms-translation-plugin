@@ -4,8 +4,8 @@
     {% trans_default_domain 'sfs_cms_contents' %}
 
     {% block title %}
-        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, entity) %}
-            <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}">
+        {% if not content_config.admin.version_translations.is_granted or is_granted(content_config.admin.version_translations.is_granted, content_entity) %}
+            <a class="ui mini basic button right floated" href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':content_entity.id}) }}">
                 <i class="language icon"></i> {{ ('admin_'~content_type~'.read.translations.edit.link')|trans }}
             </a>
         {% else %}
@@ -17,12 +17,12 @@
     {% endblock %}
 
     {% block content %}
-        {% set stats = entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
+        {% set stats = content_entity.lastVersion.getMetaField('translations_statistics')|default([]) %}
 
         <div class="ui horizontal list" style="margin-bottom: 1em;">
             <div class="item">
                 <div class="content">
-                    <div class="header">{{ ('locale.'~entity.defaultLocale)|trans({}, 'sfs_cms_admin') }}</div>
+                    <div class="header">{{ ('locale.'~content_entity.defaultLocale)|trans({}, 'sfs_cms_admin') }}</div>
                 </div>
             </div>
         </div>
