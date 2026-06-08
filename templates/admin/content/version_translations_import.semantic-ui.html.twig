@@ -19,13 +19,13 @@
        href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}">{{ ('admin_'~content_type~'.list.breadcrumb')|trans }}</a>
     <i class="right chevron icon divider"></i>
     <a class="section"
-       href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':entity.id}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': entity.name}) }}</a>
+       href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content':content_entity.id}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': content_entity.name}) }}</a>
     <i class="right chevron icon divider"></i>
     <a class="section active">{{ ('admin_'~content_type~'.translations_import.breadcrumb')|trans({'%name%':content_entity.name}) }}</a>
 {% endblock breadcrums_content %}
 
 {% block content %}
-    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'entity':version_entity} %}
+    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig']  with {'current':'translations', 'content':content_entity, 'version_entity': version_entity} %}
 
     <div class="ui bottom attached active tab segment">
         {{ form_start(form,{'attr':{'class':'ui form clearing'}}) }}
@@ -36,7 +36,7 @@
             <button class="ui labeled icon primary button" type="submit"><i
                         class="save icon"></i> {{ ('admin_'~content_type~'.translations_import.actions.import.button')|trans }}
             </button>
-            <a href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':entity.id}) }}"
+            <a href="{{ url('sfs_cms_admin_content_'~content_type~'_translations', {'content':content_entity.id}) }}"
                class="ui button">{{ ('admin_'~content_type~'.translations_import.actions.cancel.button')|trans }}</a>
         </div>
 
