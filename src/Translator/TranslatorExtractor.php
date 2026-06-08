@@ -89,7 +89,7 @@ class TranslatorExtractor
             $seo = $version->getSeo();
             foreach ($contentConfig as $field => $fieldConfig) {
                 $extractedTranslations = $this->extractFieldTranslations($fieldConfig, $seo[$field] ?? null);
-                if (null !== $extractedTranslations) {
+                if ($extractedTranslations instanceof Translation) {
                     $translations['_seo'][$field] = $extractedTranslations;
                 }
             }
@@ -151,7 +151,7 @@ class TranslatorExtractor
                         continue;
                     }
                     $extractedTranslations = $this->extractFieldTranslations($fieldConfig, $moduleData[$field] ?? null);
-                    if (null !== $extractedTranslations) {
+                    if ($extractedTranslations instanceof Translation) {
                         $translations[$field] = $extractedTranslations;
                     }
                 }
