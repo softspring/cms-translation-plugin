@@ -4,7 +4,7 @@ namespace Softspring\CmsTranslationPlugin\Admin\ActionListener\SectionVersion;
 
 use Softspring\CmsBundle\Helper\CmsHelper;
 use Softspring\CmsBundle\Manager\RouteManagerInterface;
-use Softspring\CmsBundle\Render\RenderErrorException;
+use Softspring\CmsBundle\Render\Error\RenderErrorException;
 use Softspring\CmsBundle\Request\FlashNotifier;
 use Softspring\CmsBundle\Translator\TranslatableContext;
 use Softspring\CmsSectionsPlugin\Admin\ActionListener\SectionVersion\AbstractSectionVersionListener;

@@ -18,7 +18,7 @@
                 href="{{ url('sfs_cms_admin_sections_list') }}">{{ ('admin_sections.list.breadcrumb')|trans }}</a>
     </li>
     <li class="breadcrumb-item"><a
-                href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity}) }}">{{ ('admin_sections.read.breadcrumb')|trans({'%name%': section_entity.name}) }}</a>
+                href="{{ url('sfs_cms_admin_sections_details', {'section':section_entity.id}) }}">{{ ('admin_sections.read.breadcrumb')|trans({'%name%': section_entity.name}) }}</a>
     </li>
     <li class="breadcrumb-item active"
         aria-current="section">{{ ('admin_sections.translations.breadcrumb')|trans({'%name%':section_entity.name}) }}</li>
