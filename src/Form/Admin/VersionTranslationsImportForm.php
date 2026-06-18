@@ -17,6 +17,7 @@ class VersionTranslationsImportForm extends AbstractType
     {
         $resolver->setDefaults([
             'translation_domain' => 'sfs_cms_contents',
+            'label_format' => null,
             'content_type' => null,
             'section' => null,
         ]);
