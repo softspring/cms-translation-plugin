@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Softspring\CmsTranslationPlugin;
 
-use Softspring\CmsBundle\DependencyInjection\Compiler\AddTwigBundlesNamespacesPass;
 use Softspring\CmsBundle\Plugin\SfsCmsPlugin;
 use Softspring\CmsTranslationPlugin\Config\Model\ContentExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use function dirname;
 
 class SfsCmsTranslationPlugin extends SfsCmsPlugin
