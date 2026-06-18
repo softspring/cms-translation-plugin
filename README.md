@@ -6,4 +6,4 @@
 ![PHP Version](https://img.shields.io/packagist/dependency-v/softspring/cms-translation-plugin/php?style=flat-square)
 ![Downloads](https://img.shields.io/packagist/dt/softspring/cms-translation-plugin?style=flat-square)
 [![CI](https://img.shields.io/github/actions/workflow/status/softspring/cms-translation-plugin/ci.yml?branch=6.0&style=flat-square&label=CI)](https://github.com/softspring/cms-translation-plugin/actions/workflows/ci.yml)
-![Coverage](https://raw.githubusercontent.com/softspring/cms-translation-plugin/6.0/.github/badges/coverage.svg)
+[![Coverage](https://img.shields.io/codecov/c/github/softspring/cms-translation-plugin?branch=6.0&style=flat-square)](https://codecov.io/gh/softspring/cms-translation-plugin)
