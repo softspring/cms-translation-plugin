@@ -8,6 +8,7 @@ use Softspring\CmsBundle\DependencyInjection\Compiler\AddTwigBundlesNamespacesPa
 use Softspring\CmsBundle\Plugin\SfsCmsPlugin;
 use Softspring\CmsTranslationPlugin\Config\Model\ContentExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use function dirname;
 
 class SfsCmsTranslationPlugin extends SfsCmsPlugin
 {
@@ -84,15 +85,7 @@ class SfsCmsTranslationPlugin extends SfsCmsPlugin
 
     public function getPath(): string
     {
-        return \dirname(__DIR__);
-    }
-
-    public function build(ContainerBuilder $container): void
-    {
-        parent::build($container);
-
-        // allow overriding bundles templates
-        $container->addCompilerPass(new AddTwigBundlesNamespacesPass($this->getPath().'/templates'));
+        return dirname(__DIR__);
     }
 
     protected function getConfigExtensionClasses(): array
