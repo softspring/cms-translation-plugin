@@ -252,7 +252,9 @@ class Xliff12Exchanger implements ExchangerInterface
 
                 $unit->setAttribute('id', $transId);
                 $unit->setAttribute('resname', $fieldKey);
-                $currentModule && $unit->setAttribute('data-module', $currentModule);
+                if ($currentModule) {
+                    $unit->setAttribute('data-module', $currentModule);
+                }
 
                 $unitSource = $unit->appendChild($dom->createElement('source'));
                 $fallbackMessage = $fieldTranslation[$fallbackLocale] ?? '';
