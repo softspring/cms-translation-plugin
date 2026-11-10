@@ -10,4 +10,4 @@
 
 ## Documentation
 
-[Armonic documentation](https://armonic.softspring.es/6.1@dev/bundles/cms-translation-plugin)
+[Armonic documentation](https://armonic.softspring.es/6.1-dev/bundles/cms-translation-plugin)
