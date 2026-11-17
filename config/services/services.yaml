@@ -20,7 +20,7 @@ services:
         tags: [ 'sfs_cms.translation_plugin.exchanger' ]
 
     Softspring\CmsTranslationPlugin\Exchange\Exchanger:
-        arguments: [!tagged_iterator { tag: 'sfs_cms.translation_plugin.exchanger', default_index_method: 'format' }]
+        arguments: [!tagged_iterator { tag: 'sfs_cms.translation_plugin.exchanger', index_by: 'format' }]
 
     sfs_cms_translation_plugin.content_version.statistics_listener:
         class: Softspring\CmsTranslationPlugin\EntityListener\VersionTranslationStatisticsListener
