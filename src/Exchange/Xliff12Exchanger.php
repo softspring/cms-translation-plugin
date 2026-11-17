@@ -10,8 +10,10 @@ use Exception;
 use Softspring\CmsTranslationPlugin\Utils\TranslationsCleaner;
 use Softspring\TranslatableBundle\Model\Translation;
 use Symfony\Component\Config\Util\XmlUtils;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\HttpFoundation\File\File;
 
+#[AsTaggedItem(index: 'xliff12')]
 class Xliff12Exchanger implements ExchangerInterface
 {
     public static function format(): string

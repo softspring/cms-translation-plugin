@@ -6,7 +6,9 @@ use RuntimeException;
 use Softspring\CmsBundle\Admin\Menu\MenuHelper;
 use Softspring\CmsSectionsPlugin\Admin\Menu\AbstractSectionMenuProvider;
 use Softspring\CmsSectionsPlugin\Model\SectionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
+#[AsTaggedItem(priority: 253)]
 class SectionMenuProvider extends AbstractSectionMenuProvider
 {
     public static function getPriority(): int
